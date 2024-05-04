@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -11,8 +10,8 @@ public class TaskManager {
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     // Tasks methods
-    Collection<Task> getAllTasks() {
-        return tasks.values();
+    ArrayList<Task> getAllTasks() {
+        return new ArrayList<Task>(tasks.values());
     }
 
     Task getTaskByID(Integer id) {
@@ -45,8 +44,8 @@ public class TaskManager {
     }
 
     // Subtasks methods
-    Collection<Subtask> getAllSubtasks() {
-        return subtasks.values();
+    ArrayList<Subtask> getAllSubtasks() {
+        return new ArrayList<>(subtasks.values());
     }
 
     Subtask getSubtaskByID(Integer id) {
@@ -104,8 +103,8 @@ public class TaskManager {
     }
 
     // Epics methods
-    Collection<Epic> getAllEpic() {
-        return epics.values();
+    ArrayList<Epic> getAllEpic() {
+        return new ArrayList<>(epics.values());
     }
 
     Epic getEpicID(Integer id) {
