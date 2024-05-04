@@ -10,7 +10,7 @@ public class TaskManager {
 
     // Tasks methods
     public ArrayList<Task> getAllTasks() {
-        return new ArrayList<Task>(tasks.values());
+        return new ArrayList<>(tasks.values());
     }
 
     public Task getTaskByID(Integer id) {
