@@ -20,8 +20,7 @@ public class TaskManager {
     }
 
     Integer create(Task task) {
-        Integer id = nextID;
-        ++nextID;
+        Integer id = nextID++;
 
         task.setId(id);
         tasks.put(id, task);
@@ -59,8 +58,7 @@ public class TaskManager {
             throw new IllegalArgumentException("Epic with ID=" + epicID + " was not created!");
         }
 
-        Integer subtaskID = nextID;
-        ++nextID;
+        Integer subtaskID = nextID++;
 
         subtask.setId(subtaskID);
         subtask.setEpicID(epicID);
@@ -127,8 +125,7 @@ public class TaskManager {
     }
 
     Integer create(Epic epic) {
-        Integer id = nextID;
-        ++nextID;
+        Integer id = nextID++;
 
         epic.setId(id);
         epics.put(id, epic);
