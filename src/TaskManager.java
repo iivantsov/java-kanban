@@ -67,6 +67,8 @@ public class TaskManager {
         Epic epic = epics.get(epicID);
         epic.addSubtaskID(subtaskID);
 
+        syncEpicStatus(epicID);
+
         return subtaskID;
     }
 
