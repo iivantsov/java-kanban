@@ -5,3 +5,5 @@ Implementation of Sprint 4 Kanban app
 #### Initial implementation
 This is "Epic-first" implementation, i.e. as first, an Epic must be created, and then related Subtasks must be added. 
 Any other workflow is not supported.
+### Version: 1.1
+#### Review-1 fixes and improvements
