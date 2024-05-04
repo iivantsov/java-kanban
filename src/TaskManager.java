@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class TaskManager {
-    private static Integer nextID = 1;
+    private Integer nextID = 1;
 
     private final HashMap<Integer, Task> idToTask = new HashMap<>();
     private final HashMap<Integer, Epic> idToEpic = new HashMap<>();
