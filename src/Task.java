@@ -11,6 +11,7 @@ public class Task {
     Task(String name, String description) {
         this.name = name;
         this.description = description;
+        id = INVALID_ID;
         status = TaskStatus.NEW;
     }
 

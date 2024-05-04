@@ -3,7 +3,7 @@ public class Subtask extends Task {
 
     Subtask(String name, String description) {
         super(name, description);
-        epicID = 0;
+        epicID = INVALID_ID;
     }
 
     public Integer getEpicID() {
