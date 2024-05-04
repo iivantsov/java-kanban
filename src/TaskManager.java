@@ -113,12 +113,16 @@ public class TaskManager {
     }
 
     public ArrayList<Subtask> getAllSubtasksByEpicID(Integer epicID) {
-        ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
+        if (!epics.containsKey(epicID)) {
+            throw new IllegalArgumentException("Epic ID=" + epicID + " was not created!");
+        }
 
-        for (Subtask subtask : subtasks.values()) {
-            if (subtask.getEpicID().equals(epicID)) {
-                subtasksInEpic.add(subtask);
-            }
+        ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
+        Epic epic = epics.get(epicID);
+
+        for (Integer subtaskID : epic.getAllSubtaskIDs()) {
+            Subtask subtask = subtasks.get(subtaskID);
+            subtasksInEpic.add(subtask);
         }
 
         return subtasksInEpic;
@@ -161,8 +165,8 @@ public class TaskManager {
     }
 
     private void syncEpicStatus(Integer epicID) {
+        ArrayList<Subtask> subtasksInEpic = getAllSubtasksByEpicID(epicID); // Also checks that epics contains epicID
         Epic epic = epics.get(epicID);
-        ArrayList<Subtask> subtasksInEpic = getAllSubtasksByEpicID(epicID);
 
         if (subtasksInEpic.isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
