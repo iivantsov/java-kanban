@@ -52,7 +52,9 @@ public class TaskManager {
         return subtasks.get(id);
     }
 
-    public Integer create(Subtask subtask, Integer epicID) {
+    public Integer create(Subtask subtask) {
+        Integer epicID = subtask.getEpicID();
+
         if (!epics.containsKey(epicID)) {
             throw new IllegalArgumentException("Epic with ID=" + epicID + " was not created!");
         }

@@ -18,11 +18,13 @@ public class Main {
         testStage1Log += "Epic id=" + workEpicID + ", ";
 
         Subtask workSubtask1 = new Subtask("Presentation", "Prepare a basic presentation layout");
-        Integer workSubtask1ID = taskManager.create(workSubtask1, workEpicID);
+        workSubtask1.setEpicID(workEpicID);
+        Integer workSubtask1ID = taskManager.create(workSubtask1);
         testStage1Log += "Subtask id=" + workSubtask1ID + ", ";
 
         Subtask workSubtask2 = new Subtask("Test report", "Prepare a backend test report");
-        Integer workSubtask2ID = taskManager.create(workSubtask2, workEpicID);
+        workSubtask2.setEpicID(workEpicID);
+        Integer workSubtask2ID = taskManager.create(workSubtask2);
         testStage1Log += "Subtask id=" + workSubtask2ID + ", ";
 
         Epic educationEpic = new Epic("Education", "List of education tasks for the week");
@@ -30,7 +32,8 @@ public class Main {
         testStage1Log += "Epic id=" + educationEpicID + ", ";
 
         Subtask educationSubtask1 = new Subtask("Chinese", "Translate a few short poems");
-        Integer educationSubtask1ID = taskManager.create(educationSubtask1, educationEpicID);
+        educationSubtask1.setEpicID(workEpicID);
+        Integer educationSubtask1ID = taskManager.create(educationSubtask1);
         testStage1Log += "Subtask id=" + educationSubtask1ID;
 
         printTaskManagerTestReport(taskManager, testStage1Log);
