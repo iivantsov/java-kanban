@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
@@ -71,7 +69,7 @@ public class Main {
         printTaskManagerTestReport(taskManager, testStage3Log);
     }
 
-    static void printTaskManagerTestReport(@NotNull TaskManager taskManager, String testStageLog) {
+    static void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
         System.out.println(testStageLog + "\n");
 
         for (Task task : taskManager.getAllTasks()) {

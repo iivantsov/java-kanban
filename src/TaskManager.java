@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,7 +19,7 @@ public class TaskManager {
         return tasks.get(id);
     }
 
-    Integer create(@NotNull Task task) {
+    Integer create(Task task) {
         Integer id = nextID;
         ++nextID;
 
@@ -31,7 +29,7 @@ public class TaskManager {
         return id;
     }
 
-    void update(@NotNull Task task) {
+    void update(Task task) {
         if (Objects.equals(task.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
@@ -74,7 +72,7 @@ public class TaskManager {
         return subtaskID;
     }
 
-    void update(@NotNull Subtask subtask) {
+    void update(Subtask subtask) {
         if (Objects.equals(subtask.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
@@ -128,7 +126,7 @@ public class TaskManager {
         return subtasksInEpic;
     }
 
-    Integer create(@NotNull Epic epic) {
+    Integer create(Epic epic) {
         Integer id = nextID;
         ++nextID;
 
@@ -138,7 +136,7 @@ public class TaskManager {
         return id;
     }
 
-    void update(@NotNull Epic epic) {
+    void update(Epic epic) {
         if (Objects.equals(epic.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Epic " + epic.getName() + " was not created!");
         }
