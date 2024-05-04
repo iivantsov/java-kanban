@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class TaskManager {
     private Integer nextID = 1;
@@ -28,7 +27,7 @@ public class TaskManager {
     }
 
     public void update(Task task) {
-        if (Objects.equals(task.getId(), Task.INVALID_ID)) {
+        if (!tasks.containsKey(task.getId())) {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
 
@@ -72,7 +71,7 @@ public class TaskManager {
     }
 
     public void update(Subtask subtask) {
-        if (Objects.equals(subtask.getId(), Task.INVALID_ID)) {
+        if (!subtasks.containsKey(subtask.getId())) {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
 
@@ -135,7 +134,7 @@ public class TaskManager {
     }
 
     public void update(Epic epic) {
-        if (Objects.equals(epic.getId(), Task.INVALID_ID)) {
+        if (!epics.containsKey(epic.getId())) {
             throw new IllegalArgumentException("Epic " + epic.getName() + " was not created!");
         }
 
