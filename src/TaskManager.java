@@ -10,15 +10,15 @@ public class TaskManager {
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     // Tasks methods
-    ArrayList<Task> getAllTasks() {
+    public ArrayList<Task> getAllTasks() {
         return new ArrayList<Task>(tasks.values());
     }
 
-    Task getTaskByID(Integer id) {
+    public Task getTaskByID(Integer id) {
         return tasks.get(id);
     }
 
-    Integer create(Task task) {
+    public Integer create(Task task) {
         Integer id = nextID++;
 
         task.setId(id);
@@ -27,7 +27,7 @@ public class TaskManager {
         return id;
     }
 
-    void update(Task task) {
+    public void update(Task task) {
         if (Objects.equals(task.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
@@ -35,24 +35,24 @@ public class TaskManager {
         tasks.put(task.getId(), task);
     }
 
-    void removeTaskByID(Integer id) {
+    public void removeTaskByID(Integer id) {
         tasks.remove(id);
     }
 
-    void removeAllTasks() {
+    public void removeAllTasks() {
         tasks.clear();
     }
 
     // Subtasks methods
-    ArrayList<Subtask> getAllSubtasks() {
+    public ArrayList<Subtask> getAllSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
-    Subtask getSubtaskByID(Integer id) {
+    public Subtask getSubtaskByID(Integer id) {
         return subtasks.get(id);
     }
 
-    Integer create(Subtask subtask, Integer epicID) {
+    public Integer create(Subtask subtask, Integer epicID) {
         if (!epics.containsKey(epicID)) {
             throw new IllegalArgumentException("Epic with ID=" + epicID + " was not created!");
         }
@@ -69,7 +69,7 @@ public class TaskManager {
         return subtaskID;
     }
 
-    void update(Subtask subtask) {
+    public void update(Subtask subtask) {
         if (Objects.equals(subtask.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
@@ -78,7 +78,7 @@ public class TaskManager {
         syncEpicStatus(subtask.getEpicID());
     }
 
-    void removeSubtaskByID(Integer subtaskID) {
+    public void removeSubtaskByID(Integer subtaskID) {
         if (!subtasks.containsKey(subtaskID)) {
             return;
         }
@@ -93,7 +93,7 @@ public class TaskManager {
         syncEpicStatus(epicID);
     }
 
-    void removeAllSubtasks() {
+    public void removeAllSubtasks() {
         subtasks.clear();
 
         for (Epic epic : epics.values()) {
@@ -103,15 +103,15 @@ public class TaskManager {
     }
 
     // Epics methods
-    ArrayList<Epic> getAllEpic() {
+    public ArrayList<Epic> getAllEpic() {
         return new ArrayList<>(epics.values());
     }
 
-    Epic getEpicID(Integer id) {
+    public Epic getEpicID(Integer id) {
         return epics.get(id);
     }
 
-    ArrayList<Subtask> getAllSubtasksByEpicID(Integer epicID) {
+    public ArrayList<Subtask> getAllSubtasksByEpicID(Integer epicID) {
         ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
 
         for (Subtask subtask : subtasks.values()) {
@@ -123,7 +123,7 @@ public class TaskManager {
         return subtasksInEpic;
     }
 
-    Integer create(Epic epic) {
+    public Integer create(Epic epic) {
         Integer id = nextID++;
 
         epic.setId(id);
@@ -132,7 +132,7 @@ public class TaskManager {
         return id;
     }
 
-    void update(Epic epic) {
+    public void update(Epic epic) {
         if (Objects.equals(epic.getId(), Task.INVALID_ID)) {
             throw new IllegalArgumentException("Epic " + epic.getName() + " was not created!");
         }
@@ -140,7 +140,7 @@ public class TaskManager {
         epics.put(epic.getId(), epic);
     }
 
-    void removeEpicByID(Integer epicID) {
+    public void removeEpicByID(Integer epicID) {
         if (!epics.containsKey(epicID)) {
             return;
         }
@@ -154,7 +154,7 @@ public class TaskManager {
         epics.remove(epicID);
     }
 
-    void removeAllEpic() {
+    public void removeAllEpic() {
         subtasks.clear();
         epics.clear();
     }
