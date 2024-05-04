@@ -59,13 +59,13 @@ public class Main {
 
         String testStage3Log = "3. REMOVE @ ";
 
-        taskManager.removeTask(houseTaskID);
+        taskManager.removeTaskByID(houseTaskID);
         testStage3Log += "Task id=" + houseTaskID + ", ";
 
-        taskManager.removeEpic(educationEpicID);
+        taskManager.removeEpicByID(educationEpicID);
         testStage3Log += "Epic id=" + educationEpicID + ", ";
 
-        taskManager.removeSubtask(workSubtask1ID);
+        taskManager.removeSubtaskByID(workSubtask1ID);
         testStage3Log += "Subtask id=" + workSubtask1ID + ", ";
 
         printTaskManagerTestReport(taskManager, testStage3Log);
