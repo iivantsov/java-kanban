@@ -61,7 +61,6 @@ public class TaskManager {
         Integer subtaskID = nextID++;
 
         subtask.setId(subtaskID);
-        subtask.setEpicID(epicID);
         subtasks.put(subtaskID, subtask);
 
         Epic epic = epics.get(epicID);
