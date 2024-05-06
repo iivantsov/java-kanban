@@ -6,34 +6,34 @@ public class Main {
         String testStage1Log = "1. CREATE @ ";
 
         Task hobbyTask = new Task("Violin", "Try to play Vivaldi \"The Four Seasons\"");
-        Integer hobbyTaskID = taskManager.create(hobbyTask);
+        Integer hobbyTaskID = taskManager.createTask(hobbyTask);
         testStage1Log += "Task id=" + hobbyTaskID + ", ";
 
         Task houseTask = new Task("Cleaning", "Vacuum and wash the floors at home");
-        Integer houseTaskID = taskManager.create(houseTask);
+        Integer houseTaskID = taskManager.createTask(houseTask);
         testStage1Log += "Task id=" + houseTaskID + ", ";
 
         Epic workEpic = new Epic("Kanban App", "Working on Kanban App for this week");
-        Integer workEpicID = taskManager.create(workEpic);
+        Integer workEpicID = taskManager.createEpic(workEpic);
         testStage1Log += "Epic id=" + workEpicID + ", ";
 
         Subtask workSubtask1 = new Subtask("Presentation", "Prepare a basic presentation layout");
         workSubtask1.setEpicID(workEpicID);
-        Integer workSubtask1ID = taskManager.create(workSubtask1);
+        Integer workSubtask1ID = taskManager.createSubtask(workSubtask1);
         testStage1Log += "Subtask id=" + workSubtask1ID + ", ";
 
         Subtask workSubtask2 = new Subtask("Test report", "Prepare a backend test report");
         workSubtask2.setEpicID(workEpicID);
-        Integer workSubtask2ID = taskManager.create(workSubtask2);
+        Integer workSubtask2ID = taskManager.createSubtask(workSubtask2);
         testStage1Log += "Subtask id=" + workSubtask2ID + ", ";
 
         Epic educationEpic = new Epic("Education", "List of education tasks for the week");
-        Integer educationEpicID = taskManager.create(educationEpic);
+        Integer educationEpicID = taskManager.createEpic(educationEpic);
         testStage1Log += "Epic id=" + educationEpicID + ", ";
 
         Subtask educationSubtask1 = new Subtask("Chinese", "Translate a few short poems");
         educationSubtask1.setEpicID(workEpicID);
-        Integer educationSubtask1ID = taskManager.create(educationSubtask1);
+        Integer educationSubtask1ID = taskManager.createSubtask(educationSubtask1);
         testStage1Log += "Subtask id=" + educationSubtask1ID;
 
         printTaskManagerTestReport(taskManager, testStage1Log);
@@ -41,19 +41,19 @@ public class Main {
         String testStage2Log = "2. UPDATE @ ";
 
         hobbyTask.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.update(hobbyTask);
+        taskManager.updateTask(hobbyTask);
         testStage2Log += "Task id=" + hobbyTaskID + "(" + hobbyTask.getStatus() +"), ";
 
         houseTask.setStatus(TaskStatus.DONE);
-        taskManager.update(houseTask);
+        taskManager.updateTask(houseTask);
         testStage2Log += "Task id=" + houseTaskID + "(" + houseTask.getStatus() +"), ";
 
         workSubtask1.setStatus(TaskStatus.DONE);
-        taskManager.update(workSubtask1);
+        taskManager.updateSubtask(workSubtask1);
         testStage2Log += "Subtask id=" + workSubtask1ID +  "(" + workSubtask1.getStatus() +"), ";
 
         educationSubtask1.setStatus(TaskStatus.DONE);
-        taskManager.update(educationSubtask1);
+        taskManager.updateSubtask(educationSubtask1);
         testStage2Log += "Subtask id=" + educationSubtask1ID +  "(" + educationSubtask1.getStatus() +"), ";
 
         printTaskManagerTestReport(taskManager, testStage2Log);

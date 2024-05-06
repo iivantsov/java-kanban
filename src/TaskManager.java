@@ -17,7 +17,7 @@ public class TaskManager {
         return tasks.get(id);
     }
 
-    public Integer create(Task task) {
+    public Integer createTask(Task task) {
         Integer id = nextID++;
 
         task.setId(id);
@@ -26,7 +26,7 @@ public class TaskManager {
         return id;
     }
 
-    public void update(Task task) {
+    public void updateTask(Task task) {
         if (!tasks.containsKey(task.getId())) {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
@@ -51,7 +51,7 @@ public class TaskManager {
         return subtasks.get(id);
     }
 
-    public Integer create(Subtask subtask) {
+    public Integer createSubtask(Subtask subtask) {
         Integer epicID = subtask.getEpicID();
 
         if (!epics.containsKey(epicID)) {
@@ -72,7 +72,7 @@ public class TaskManager {
         return subtaskID;
     }
 
-    public void update(Subtask subtask) {
+    public void updateSubtask(Subtask subtask) {
         if (!subtasks.containsKey(subtask.getId())) {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
@@ -130,7 +130,7 @@ public class TaskManager {
         return subtasksInEpic;
     }
 
-    public Integer create(Epic epic) {
+    public Integer createEpic(Epic epic) {
         Integer id = nextID++;
 
         epic.setId(id);
@@ -139,7 +139,7 @@ public class TaskManager {
         return id;
     }
 
-    public void update(Epic epic) {
+    public void updateEpic(Epic epic) {
         if (!epics.containsKey(epic.getId())) {
             throw new IllegalArgumentException("Epic " + epic.getName() + " was not created!");
         }
