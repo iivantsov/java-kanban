@@ -32,7 +32,7 @@ public class Main {
         testStage1Log += "Epic id=" + educationEpicID + ", ";
 
         Subtask educationSubtask1 = new Subtask("Chinese", "Translate a few short poems");
-        educationSubtask1.setEpicID(workEpicID);
+        educationSubtask1.setEpicID(educationEpicID);
         Integer educationSubtask1ID = taskManager.createSubtask(educationSubtask1);
         testStage1Log += "Subtask id=" + educationSubtask1ID;
 
