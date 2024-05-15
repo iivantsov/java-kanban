@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         System.out.println("Kanban App Test:\n");
         String testStage1Log = "1. CREATE @ ";
