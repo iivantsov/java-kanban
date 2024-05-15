@@ -1,12 +1,21 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private Integer nextID = 1;
 
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
 
     // Tasks methods
     @Override
@@ -16,7 +25,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskByID(Integer id) {
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.add(task);
+
+        return task;
     }
 
     @Override
@@ -56,7 +68,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Subtask getSubtaskByID(Integer id) {
-        return subtasks.get(id);
+        Subtask subtask = subtasks.get(id);
+        historyManager.add(subtask);
+
+        return subtask;
     }
 
     @Override
@@ -124,7 +139,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicByID(Integer id) {
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        historyManager.add(epic);
+
+        return epic;
     }
 
     @Override

@@ -38,7 +38,25 @@ public class Main {
 
         printTaskManagerTestReport(taskManager, testStage1Log);
 
-        String testStage2Log = "2. UPDATE @ ";
+        // 2. HISTORY
+        taskManager.getTaskByID(hobbyTaskID);
+        taskManager.getTaskByID(houseTaskID);
+
+        taskManager.getEpicByID(workEpicID);
+        taskManager.getSubtaskByID(workSubtask1ID);
+        taskManager.getSubtaskByID(workSubtask2ID);
+
+        taskManager.getEpicByID(educationEpicID);
+        taskManager.getSubtaskByID(educationSubtask1ID);
+
+        System.out.println("2. HISTORY @ View all tasks created in 1 \n");
+
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
+        }
+        System.out.println();
+
+        String testStage2Log = "3. UPDATE @ ";
 
         hobbyTask.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateTask(hobbyTask);
@@ -58,7 +76,7 @@ public class Main {
 
         printTaskManagerTestReport(taskManager, testStage2Log);
 
-        String testStage3Log = "3. REMOVE @ ";
+        String testStage3Log = "4. REMOVE @ ";
 
         taskManager.removeTaskByID(houseTaskID);
         testStage3Log += "Task id=" + houseTaskID + ", ";

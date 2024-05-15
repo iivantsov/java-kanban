@@ -1,6 +1,9 @@
+import java.util.List;
 import java.util.ArrayList;
 
 public interface TaskManager {
+    List<Task> getHistory();
+
     // Tasks methods
     ArrayList<Task> getAllTasks();
     Task getTaskByID(Integer id);
