@@ -2,7 +2,7 @@ public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
 
-        System.out.println("Kanban App Test:\n");
+        System.out.println("Kanban App Demo:\n");
         String testStage1Log = "1. CREATE @ ";
 
         Task hobbyTask = new Task("Violin", "Try to play Vivaldi \"The Four Seasons\"");
