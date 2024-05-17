@@ -8,6 +8,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
+        if (task == null) {
+            return;
+        }
+
         history.add(task);
 
         if (history.size() > MAX_HISTORY_SIZE) {
@@ -17,6 +21,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        return history;
+        return new LinkedList<>(history);
     }
 }
