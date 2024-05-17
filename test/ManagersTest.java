@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ManagersTest {
     @Test
-    public void areManagersValid()
+    public void givenManagersClass_whenCallGetDefaultMethods_thenObtainValidTaskAndHistoryManagerObjects()
     {
         TaskManager taskManager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();

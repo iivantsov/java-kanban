@@ -11,7 +11,7 @@ class EpicTest extends TaskTest {
     }
 
     @Test
-    public void unableToSetSubtaskIDAsEpicID() {
+    public void givenEpicID_whenAddAsSubtaskIDToThisEpic_thenExceptionThrows() {
         Epic epic = (Epic)task1;
         epic.setId(1);
 

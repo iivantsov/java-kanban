@@ -26,7 +26,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void createAndFindVariableTaskTypes() {
+    public void givenOneTaskOneEpicWithTwoSubtasks_whenCreatesInTaskManager_thenAllCreatedAndFoundByID() {
         // Task
         Task newTask = new Task("Task", "Test Task");
         Integer newTaskID = taskManager.createTask(newTask);
@@ -62,7 +62,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void checkEpicAndSubtaskAreNotChangedAfterRegistration() {
+    public void givenEpicWithOneSubtask_whenCreateInTaskManager_thenEpicAndSubtaskDataDoesNotChange() {
         Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
 
@@ -92,7 +92,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void checkEpicStatusDependsOnSubtasksStatus() {
+    public void givenSubtasksWithNewAndDoneStatuses_whenCheckEpicStatus_thenEpicStatusIsInProgress() {
         Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask");
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
@@ -102,7 +102,16 @@ class InMemoryTaskManagerTest {
 
         assertEquals(newEpic1.getStatus(),TaskStatus.IN_PROGRESS,
                 "Epic1 status=" + newEpic1.getStatus() + "(IN_PROGRESS expected)");
+    }
 
+    @Test
+    public void givenSubtasksWithNewAndDoneStatuses_whenRemoveDoneTask_thenEpicStatusIsNew() {
+        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask");
+        newSubtask2.setEpicID(newEpic1ID);
+        Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
+
+        newSubtask1.setStatus(TaskStatus.DONE);
+        taskManager.updateSubtask(newSubtask1);
         taskManager.removeSubtaskByID(newSubtask1ID);
 
         assertEquals(newEpic1.getStatus(),TaskStatus.NEW,
@@ -110,7 +119,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void historyManagerContainsPrevTaskState() {
+    public void givenEpicDescriptionAndSubtaskStatusUpdates_whenGetHistory_thenHistoryHaveNotUpdatedEpicAndSubtask() {
         Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
 

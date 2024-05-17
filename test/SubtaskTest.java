@@ -11,7 +11,7 @@ class SubtaskTest extends TaskTest {
      }
 
      @Test
-     public void unableToSetEpicIDAsSubtaskID() {
+     public void givenEpicID_whenSetAsRelatedSubtaskID_thenExceptionThrows() {
          Subtask subtask = (Subtask)task1;
          subtask.setId(1);
 
