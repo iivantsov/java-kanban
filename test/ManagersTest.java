@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ManagersTest {
+
     @Test
     public void givenManagersClass_whenCallGetDefaultMethods_thenObtainValidTaskAndHistoryManagerObjects()
     {

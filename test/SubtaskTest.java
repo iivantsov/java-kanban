@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SubtaskTest extends TaskTest {
+
      @BeforeEach
      @Override
      protected void init() {
@@ -14,7 +15,6 @@ class SubtaskTest extends TaskTest {
      public void givenEpicID_whenSetAsRelatedSubtaskID_thenExceptionThrows() {
          Subtask subtask = (Subtask)task1;
          subtask.setId(1);
-
          assertThrows(IllegalArgumentException.class, () -> subtask.setEpicID(subtask.getId()));
      }
 }

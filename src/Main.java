@@ -41,16 +41,13 @@ public class Main {
         // 2. HISTORY
         taskManager.getTaskByID(hobbyTaskID);
         taskManager.getTaskByID(houseTaskID);
-
         taskManager.getEpicByID(workEpicID);
         taskManager.getSubtaskByID(workSubtask1ID);
         taskManager.getSubtaskByID(workSubtask2ID);
-
         taskManager.getEpicByID(educationEpicID);
         taskManager.getSubtaskByID(educationSubtask1ID);
 
         System.out.println("2. HISTORY @ View all tasks created in 1 \n");
-
         for (Task task : taskManager.getHistory()) {
             System.out.println(task);
         }
@@ -80,10 +77,8 @@ public class Main {
 
         taskManager.removeTaskByID(houseTaskID);
         testStage3Log += "Task id=" + houseTaskID + ", ";
-
         taskManager.removeEpicByID(educationEpicID);
         testStage3Log += "Epic id=" + educationEpicID + ", ";
-
         taskManager.removeSubtaskByID(workSubtask1ID);
         testStage3Log += "Subtask id=" + workSubtask1ID + ", ";
 
@@ -92,23 +87,19 @@ public class Main {
 
     static void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
         System.out.println(testStageLog + "\n");
-
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(task);
         }
-
         System.out.println();
 
         for (Epic epic : taskManager.getAllEpic()) {
             System.out.println(epic);
         }
-
         System.out.println();
 
         for (Subtask subtask : taskManager.getAllSubtasks()) {
             System.out.println(subtask);
         }
-
         System.out.println();
     }
 }

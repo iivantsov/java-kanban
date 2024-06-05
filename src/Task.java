@@ -2,7 +2,6 @@ import java.util.Objects;
 
 public class Task {
     public static final Integer INVALID_ID = 0;
-
     protected String name;
     protected String description;
     protected Integer id;
@@ -52,11 +51,9 @@ public class Task {
         if (this == o) {
             return true;
         }
-
         if (!(o instanceof Task task)) {
             return false;
         }
-
         return  Objects.equals(id, task.id);
     }
 

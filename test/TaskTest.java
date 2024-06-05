@@ -16,18 +16,15 @@ class TaskTest {
     public void givenTwoDifferentIDs_whenSetIDsToTasksWithSameNameStatusDescription_thenTasksAreNotEquals() {
         task1.setId(1);
         task2.setId(2);
-
         Assertions.assertNotEquals(task1, task2, "Different IDs, but are equals!");
     }
 
     @Test
     public void givenSingleID_whenSetIDsToTasksWithDifferentNameDescription_thenTasksAreEquals() {
         int id = 777;
-
         task1.setId(id);
         task1.setName("Easy");
         task1.setDescription("Say Hello World!");
-
         task2.setId(id);
         task2.setName("Hard");
         task2.setDescription("Say Freundschaftsbeziehungen!");
