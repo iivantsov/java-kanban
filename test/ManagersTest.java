@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ManagersTest {
 
     @Test
-    public void givenManagersClass_whenCallGetDefaultMethods_thenObtainValidTaskAndHistoryManagerObjects()
+    public void testGetDefaultReturnsValidTaskAndHistoryManagerObjects()
     {
         TaskManager taskManager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();

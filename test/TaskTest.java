@@ -7,20 +7,20 @@ class TaskTest {
     protected Task task2;
 
     @BeforeEach
-    protected void init() {
+    protected void testInit() {
         task1 = new Task("NAME","DESCRIPTION");
         task2 = new Task("NAME","DESCRIPTION");
     }
 
     @Test
-    public void givenTwoDifferentIDs_whenSetIDsToTasksWithSameNameStatusDescription_thenTasksAreNotEquals() {
+    public void testSetTwoDifferentIDsToTasksWithSameNameStatusDescriptionResultsInTasksAreNotEquals() {
         task1.setId(1);
         task2.setId(2);
         Assertions.assertNotEquals(task1, task2, "Different IDs, but are equals!");
     }
 
     @Test
-    public void givenSingleID_whenSetIDsToTasksWithDifferentNameDescription_thenTasksAreEquals() {
+    public void testSetSingleIDToTasksWithDifferentNameDescriptionResultsInTasksAreEquals() {
         int id = 777;
         task1.setId(id);
         task1.setName("Easy");

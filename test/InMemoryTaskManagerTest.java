@@ -11,7 +11,7 @@ class InMemoryTaskManagerTest {
     private Integer newSubtask1ID;
 
     @BeforeEach
-    public void init() {
+    public void testInit() {
         taskManager = Managers.getDefault();
         newEpic1 = new Epic("Epic#1", "Test Epic");
         newEpic1ID = taskManager.createEpic(newEpic1);
@@ -21,7 +21,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void givenOneTaskOneEpicWithTwoSubtasks_whenCreatesInTaskManager_thenAllCreatedAndFoundByID() {
+    public void testCreateOneTaskAndOneEpicWithTwoSubtasksSuccessfullyCreatesAllItemsThatCanBeGetById() {
         // Task
         Task newTask = new Task("Task", "Test Task");
         Integer newTaskID = taskManager.createTask(newTask);
@@ -51,7 +51,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void givenEpicWithOneSubtask_whenCreateInTaskManager_thenEpicAndSubtaskDataDoesNotChange() {
+    public void testCreateEpicWithOneSubtaskDoesNotChangeIdNameDescriptionStatus() {
         Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
 
@@ -76,7 +76,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void givenSubtasksWithNewAndDoneStatuses_whenCheckEpicStatus_thenEpicStatusIsInProgress() {
+    public void testCreateNewSubtaskAndUpdateExistedSubtaskWithDoneStatusChangesEpicStatusToInProgress() {
         Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask");
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
@@ -88,7 +88,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void givenSubtasksWithNewAndDoneStatuses_whenRemoveDoneTask_thenEpicStatusIsNew() {
+    public void testRemoveDoneSubtaskFromEpicWithNewAndDoneSubtasksChangesEpicStatusToNew() {
         Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask");
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
@@ -101,7 +101,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void givenEpicDescriptionAndSubtaskStatusUpdates_whenGetHistory_thenHistoryHaveNotUpdatedEpicAndSubtask() {
+    public void testGetHistoryReturnsUnchangedEpicAndSubtaskAfterTheyWereUpdatedWithoutGetById() {
         Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
         Integer registeredSubtaskID = subtasksInRegisteredEpic.getFirst();

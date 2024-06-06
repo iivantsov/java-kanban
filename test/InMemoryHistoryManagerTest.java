@@ -5,7 +5,7 @@ import java.util.List;
 class InMemoryHistoryManagerTest {
 
     @Test
-    void givenOneValidAndOneNullTask_whenAddToHistory_thenProduceNotNullHistorySizeOfOne() {
+    void testAddSuccessfullyAddsNotNullTaskToHistory() {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = new Task("Task", "Test Task");
         historyManager.add(task);
