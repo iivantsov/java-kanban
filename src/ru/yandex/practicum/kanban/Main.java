@@ -1,3 +1,9 @@
+package ru.yandex.practicum.kanban;
+
+import ru.yandex.practicum.kanban.model.*;
+import ru.yandex.practicum.kanban.service.Managers;
+import ru.yandex.practicum.kanban.service.api.TaskManager;
+
 public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
@@ -27,7 +33,7 @@ public class Main {
         Integer workSubtask2ID = taskManager.createSubtask(workSubtask2);
         testStage1Log += "Subtask id=" + workSubtask2ID + ", ";
 
-        Subtask workSubtask3 = new Subtask("Bonuses", "Prepare a list of developers for bonus payment");
+        Subtask workSubtask3 = new Subtask("Bonus", "Prepare a list of developers for bonus payment");
         workSubtask3.setEpicID(workEpicID);
         Integer workSubtask3ID = taskManager.createSubtask(workSubtask3);
         testStage1Log += "Subtask id=" + workSubtask3ID + ", ";

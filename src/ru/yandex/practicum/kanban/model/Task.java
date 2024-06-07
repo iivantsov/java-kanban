@@ -1,3 +1,5 @@
+package ru.yandex.practicum.kanban.model;
+
 import java.util.Objects;
 
 public class Task {
@@ -7,14 +9,14 @@ public class Task {
     protected Integer id;
     protected TaskStatus status;
 
-    Task(String name, String description) {
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
         id = INVALID_ID;
         status = TaskStatus.NEW;
     }
 
-    Task(Task other) {
+    public Task(Task other) {
         this.name = other.name;
         this.description = other.description;
         this.id = other.id;
@@ -61,6 +63,7 @@ public class Task {
         if (!(o instanceof Task task)) {
             return false;
         }
+
         return  Objects.equals(id, task.id);
     }
 

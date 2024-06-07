@@ -1,3 +1,9 @@
+package ru.yandex.practicum.kanban.service.impl;
+
+import ru.yandex.practicum.kanban.model.*;
+import ru.yandex.practicum.kanban.service.api.*;
+import ru.yandex.practicum.kanban.service.Managers;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -93,6 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
         subtasks.put(subtask.getId(), subtask);
+
         syncEpicStatus(subtask.getEpicID());
     }
 
@@ -117,6 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.remove(subtaskID);
         }
         subtasks.clear();
+
         for (Epic epic : epics.values()) {
             epic.removeAllSubtaskIDs();
             epic.setStatus(TaskStatus.NEW);
@@ -143,6 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
         Epic epic = epics.get(epicID);
+
         for (Integer subtaskID : epic.getAllSubtaskIDs()) {
             Subtask subtask = subtasks.get(subtaskID);
             subtasksInEpic.add(subtask);
@@ -172,10 +181,12 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         Epic epic = epics.get(epicID);
+
         for (Integer subtaskID : epic.getAllSubtaskIDs()) {
             subtasks.remove(subtaskID);
             historyManager.remove(subtaskID);
         }
+
         epics.remove(epicID);
         historyManager.remove(epicID);
     }
@@ -200,9 +211,9 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(TaskStatus.NEW);
             return;
         }
+
         int newSubtasksCnt = 0;
         int doneSubtasksCnt = 0;
-
         for (Subtask currSubtask : subtasksInEpic) {
             TaskStatus subtaskStatus = currSubtask.getStatus();
             if (subtaskStatus == TaskStatus.IN_PROGRESS) {

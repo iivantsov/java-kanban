@@ -1,6 +1,11 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ru.yandex.practicum.kanban.model.*;
+import ru.yandex.practicum.kanban.service.Managers;
+import ru.yandex.practicum.kanban.service.api.TaskManager;
+
 import java.util.List;
 
 class InMemoryTaskManagerTest {
@@ -30,6 +35,7 @@ class InMemoryTaskManagerTest {
 
         assertNotNull(registeredTask, "Task not found!");
         assertEquals(newTask, registeredTask, "Added and stored Tasks are not equals!");
+
         // Epic & Subtasks
         Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask");
         newSubtask2.setEpicID(newEpic1ID);
@@ -82,6 +88,7 @@ class InMemoryTaskManagerTest {
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
         newSubtask1.setStatus(TaskStatus.DONE);
+
         taskManager.updateSubtask(newSubtask1);
 
         assertEquals(newEpic1.getStatus(),TaskStatus.IN_PROGRESS,
@@ -94,6 +101,7 @@ class InMemoryTaskManagerTest {
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
         newSubtask1.setStatus(TaskStatus.DONE);
+
         taskManager.updateSubtask(newSubtask1);
         taskManager.removeSubtaskByID(newSubtask1ID);
 
@@ -116,11 +124,10 @@ class InMemoryTaskManagerTest {
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
         Integer registeredSubtaskID = subtasksInRegisteredEpic.getFirst();
         Subtask registeredSubtask = taskManager.getSubtaskByID(registeredSubtaskID);
-
         List<Task> history = taskManager.getHistory();
 
         String prevEpicDescription = registeredEpic.getDescription();
-        registeredEpic.setDescription("Main Test Epic");
+        registeredEpic.setDescription("Subtask.ru.yandex.practicum.kanban.Main Test Epic");
         taskManager.updateEpic(registeredEpic);
 
         TaskStatus prevSubtaskStatus = registeredSubtask.getStatus();
