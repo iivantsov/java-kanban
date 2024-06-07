@@ -7,13 +7,14 @@ class InMemoryTaskManagerTest {
     private TaskManager taskManager;
     private Epic newEpic1;
     private Integer newEpic1ID;
+    static private final String NEW_EPIC1_DESCRIPTION = "Test Epic";
     private Subtask newSubtask1;
     private Integer newSubtask1ID;
 
     @BeforeEach
     public void testInit() {
         taskManager = Managers.getDefault();
-        newEpic1 = new Epic("Epic#1", "Test Epic");
+        newEpic1 = new Epic("Epic#1", NEW_EPIC1_DESCRIPTION);
         newEpic1ID = taskManager.createEpic(newEpic1);
         newSubtask1 = new Subtask("Subtask#1", "Test Subtask");
         newSubtask1.setEpicID(newEpic1ID);
@@ -101,6 +102,15 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    public void testRemoveAllSubtasksClearsEpicSubtaskIDsList() {
+        taskManager.removeAllSubtasks();
+        Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
+        List<Integer> subtaskIDs = registeredEpic.getAllSubtaskIDs();
+
+        assertTrue(subtaskIDs.isEmpty(), "Subtask IDs list for Epic1 is not empty!");
+    }
+
+    @Test
     public void testGetHistoryReturnsUnchangedEpicAndSubtaskAfterTheyWereUpdatedWithoutGetById() {
         Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
         List<Integer> subtasksInRegisteredEpic = registeredEpic.getAllSubtaskIDs();
@@ -125,6 +135,39 @@ class InMemoryTaskManagerTest {
                 assertNotEquals(task.getStatus(), prevSubtaskStatus,
                         "Subtask status changed in History after update without get by ID!");
             }
+        }
+    }
+
+    @Test
+    public void testGetHistoryReturnsOnlyLastEpicView() {
+        // 1st view
+        Epic registeredEpic = taskManager.getEpicByID(newEpic1ID);
+        // Update
+        registeredEpic.setDescription("Test Epic for getHistory");
+        taskManager.updateEpic(registeredEpic);
+        // 2nd view
+        Epic registeredEpicUpdated = taskManager.getEpicByID(newEpic1ID);
+
+        for (Task task : taskManager.getHistory()) {
+            String description = task.getDescription();
+            assertNotEquals(description, NEW_EPIC1_DESCRIPTION, "Previous Epic view stores in history!");
+        }
+    }
+
+    @Test
+    public void testRemoveSubtaskByIdDeletesViewedSubtaskFromHistory() {
+        // Add new Subtask2 to Epic1
+        Subtask newSubtask2 = new Subtask("Subtask#2","Test Subtask");
+        newSubtask2.setEpicID(newEpic1ID);
+        Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
+        // View all created Subtasks
+        Subtask registeredSubtask1 = taskManager.getSubtaskByID(newSubtask1ID);
+        Subtask registeredSubtask2 = taskManager.getSubtaskByID(newSubtask2ID);
+        // Remove Subtask1 from Epic1
+        taskManager.removeSubtaskByID(newSubtask1ID);
+
+        for (Task task : taskManager.getHistory()) {
+            assertNotEquals(task, registeredSubtask1,"History contains removed Subtask1!");
         }
     }
 }
