@@ -12,3 +12,8 @@ Any other workflow is not supported.
 - App has been refactored by extracting interfaces
 - History feature implemented
 - Test added
+### Version: 2.1
+#### Sprint-6 improvements added
+- Removed limit on history depth
+- History feature reimplemented to eliminate duplicates
+- Test coverage improved
