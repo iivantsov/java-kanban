@@ -91,7 +91,7 @@ public class Main {
         printHistory(taskManager);
     }
 
-    static private void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
+    private static void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
         System.out.println(testStageLog + "\n");
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(task);
@@ -109,7 +109,7 @@ public class Main {
         System.out.println();
     }
 
-    static private void printHistory(TaskManager taskManager) {
+    private static void printHistory(TaskManager taskManager) {
         System.out.println("@ HISTORY");
         for (Task task : taskManager.getHistory()) {
             System.out.println(task);
