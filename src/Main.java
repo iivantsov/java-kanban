@@ -27,6 +27,11 @@ public class Main {
         Integer workSubtask2ID = taskManager.createSubtask(workSubtask2);
         testStage1Log += "Subtask id=" + workSubtask2ID + ", ";
 
+        Subtask workSubtask3 = new Subtask("Bonuses", "Prepare a list of developers for bonus payment");
+        workSubtask3.setEpicID(workEpicID);
+        Integer workSubtask3ID = taskManager.createSubtask(workSubtask3);
+        testStage1Log += "Subtask id=" + workSubtask3ID + ", ";
+
         Epic educationEpic = new Epic("Education", "List of education tasks for the week");
         Integer educationEpicID = taskManager.createEpic(educationEpic);
         testStage1Log += "Epic id=" + educationEpicID + ", ";
@@ -38,54 +43,55 @@ public class Main {
 
         printTaskManagerTestReport(taskManager, testStage1Log);
 
-        // 2. HISTORY
+        // HISTORY
         taskManager.getTaskByID(hobbyTaskID);
         taskManager.getTaskByID(houseTaskID);
         taskManager.getEpicByID(workEpicID);
         taskManager.getSubtaskByID(workSubtask1ID);
         taskManager.getSubtaskByID(workSubtask2ID);
+        taskManager.getSubtaskByID(workSubtask3ID);
         taskManager.getEpicByID(educationEpicID);
-        taskManager.getSubtaskByID(educationSubtask1ID);
+        taskManager.getSubtaskByID(workSubtask3ID);
+        taskManager.getSubtaskByID(workSubtask2ID);
+        taskManager.getSubtaskByID(workSubtask1ID);
+        taskManager.getEpicByID(educationEpicID);
+        taskManager.getTaskByID(hobbyTaskID);
 
-        System.out.println("2. HISTORY @ View all tasks created in 1 \n");
-        for (Task task : taskManager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println();
+        printHistory(taskManager);
 
-        String testStage2Log = "3. UPDATE @ ";
+        String testStage2Log = "2. UPDATE @ ";
 
         hobbyTask.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateTask(hobbyTask);
-        testStage2Log += "Task id=" + hobbyTaskID + "(" + hobbyTask.getStatus() +"), ";
+        testStage2Log += "Task id=" + hobbyTaskID + "(" + hobbyTask.getStatus() + "), ";
 
         houseTask.setStatus(TaskStatus.DONE);
         taskManager.updateTask(houseTask);
-        testStage2Log += "Task id=" + houseTaskID + "(" + houseTask.getStatus() +"), ";
+        testStage2Log += "Task id=" + houseTaskID + "(" + houseTask.getStatus() + "), ";
 
         workSubtask1.setStatus(TaskStatus.DONE);
         taskManager.updateSubtask(workSubtask1);
-        testStage2Log += "Subtask id=" + workSubtask1ID +  "(" + workSubtask1.getStatus() +"), ";
+        testStage2Log += "Subtask id=" + workSubtask1ID + "(" + workSubtask1.getStatus() + "), ";
 
         educationSubtask1.setStatus(TaskStatus.DONE);
         taskManager.updateSubtask(educationSubtask1);
-        testStage2Log += "Subtask id=" + educationSubtask1ID +  "(" + educationSubtask1.getStatus() +"), ";
+        testStage2Log += "Subtask id=" + educationSubtask1ID + "(" + educationSubtask1.getStatus() + "), ";
 
         printTaskManagerTestReport(taskManager, testStage2Log);
 
-        String testStage3Log = "4. REMOVE @ ";
+        String testStage3Log = "3. REMOVE @ ";
 
         taskManager.removeTaskByID(houseTaskID);
         testStage3Log += "Task id=" + houseTaskID + ", ";
-        taskManager.removeEpicByID(educationEpicID);
-        testStage3Log += "Epic id=" + educationEpicID + ", ";
-        taskManager.removeSubtaskByID(workSubtask1ID);
-        testStage3Log += "Subtask id=" + workSubtask1ID + ", ";
+
+        taskManager.removeEpicByID(workEpicID);
+        testStage3Log += "Epic id=" + workEpicID + ", ";
 
         printTaskManagerTestReport(taskManager, testStage3Log);
+        printHistory(taskManager);
     }
 
-    static void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
+    static private void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
         System.out.println(testStageLog + "\n");
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(task);
@@ -99,6 +105,14 @@ public class Main {
 
         for (Subtask subtask : taskManager.getAllSubtasks()) {
             System.out.println(subtask);
+        }
+        System.out.println();
+    }
+
+    static private void printHistory(TaskManager taskManager) {
+        System.out.println("@ HISTORY");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
         }
         System.out.println();
     }
