@@ -1,3 +1,7 @@
+package ru.yandex.practicum.kanban.service.api;
+
+import ru.yandex.practicum.kanban.model.Task;
+
 import java.util.List;
 
 public interface HistoryManager {

@@ -1,10 +1,13 @@
 import java.util.List;
 import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import ru.yandex.practicum.kanban.model.Task;
+import ru.yandex.practicum.kanban.service.api.HistoryManager;
+import ru.yandex.practicum.kanban.service.Managers;
 
 class InMemoryHistoryManagerTest {
     static private final String DEFAULT_TASK_DESCRIPTION = "Test Task";

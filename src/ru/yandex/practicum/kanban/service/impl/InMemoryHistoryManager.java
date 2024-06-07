@@ -1,3 +1,8 @@
+package ru.yandex.practicum.kanban.service.impl;
+
+import ru.yandex.practicum.kanban.model.*;
+import ru.yandex.practicum.kanban.service.api.HistoryManager;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node<Task> node = taskIdToNode.get(id);
             removeNode(node);
         }
+
         Node<Task> node = linkLast(task);
         taskIdToNode.put(id, node);
     }

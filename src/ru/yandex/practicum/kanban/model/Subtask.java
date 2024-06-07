@@ -1,7 +1,9 @@
+package ru.yandex.practicum.kanban.model;
+
 public class Subtask extends Task {
     private Integer epicID;
 
-    Subtask(String name, String description) {
+    public Subtask(String name, String description) {
         super(name, description);
         epicID = INVALID_ID;
     }

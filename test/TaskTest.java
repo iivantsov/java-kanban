@@ -2,6 +2,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ru.yandex.practicum.kanban.model.Task;
+
 class TaskTest {
     protected Task task1;
     protected Task task2;
