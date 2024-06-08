@@ -1,8 +1,9 @@
+package ru.yandex.practicum.kanban.service;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ru.yandex.practicum.kanban.service.api.*;
-import ru.yandex.practicum.kanban.service.Managers;
 
 class ManagersTest {
 

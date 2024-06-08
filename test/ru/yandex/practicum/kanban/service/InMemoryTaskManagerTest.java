@@ -1,9 +1,10 @@
+package ru.yandex.practicum.kanban.service;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ru.yandex.practicum.kanban.model.*;
-import ru.yandex.practicum.kanban.service.Managers;
 import ru.yandex.practicum.kanban.service.api.TaskManager;
 
 import java.util.List;

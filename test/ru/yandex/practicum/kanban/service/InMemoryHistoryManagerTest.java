@@ -1,3 +1,5 @@
+package ru.yandex.practicum.kanban.service;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -7,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ru.yandex.practicum.kanban.model.Task;
 import ru.yandex.practicum.kanban.service.api.HistoryManager;
-import ru.yandex.practicum.kanban.service.Managers;
 
 class InMemoryHistoryManagerTest {
     static private final String DEFAULT_TASK_DESCRIPTION = "Test Task";
