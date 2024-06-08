@@ -8,10 +8,73 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
+
+    private class TaskLinkedList {
+        private Node head = null;
+        private Node tail = null;
+        private int size = 0;
+
+        private Node linkLast(Task task) {
+            if (task == null) {
+                return null;
+            }
+            Node oldTail = tail;
+            Task taskCopy = new Task(task);
+            Node newNode = new Node(oldTail, taskCopy, null);
+            tail = newNode;
+
+            if (oldTail == null) {
+                head = tail;
+            } else {
+                oldTail.setNext(newNode);
+            }
+
+            ++size;
+            return tail;
+        }
+
+        private void removeNode(Node node) {
+            if (node == null) {
+                return;
+            }
+            Node prev = node.getPrev();
+            Node next = node.getNext();
+
+            if (prev == null) {
+                head = next;
+            } else {
+                prev.setNext(next);
+                node.setPrev(null);
+            }
+
+            if (next == null) {
+                tail = prev;
+            } else {
+                next.setPrev(prev);
+                node.setNext(null);
+            }
+
+            node.setTask(null);
+            --size;
+        }
+
+        private List<Task> getTasks() {
+            if (head == null) {
+                return null;
+            }
+            ArrayList<Task> tasks = new ArrayList<>();
+            Node currNode = head;
+
+            while (currNode != null) {
+                tasks.add(currNode.getTask());
+                currNode = currNode.getNext();
+            }
+            return tasks;
+        }
+    }
+
+    private final TaskLinkedList taskList = new TaskLinkedList();
     private final HashMap<Integer, Node> taskIdToNode = new HashMap<>();
-    private Node head = null;
-    private Node tail = null;
-    private int size = 0;
 
     @Override
     public void add(Task task) {
@@ -22,10 +85,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         if (taskIdToNode.containsKey(id)) {
             Node node = taskIdToNode.get(id);
-            removeNode(node);
+            taskList.removeNode(node);
         }
 
-        Node node = linkLast(task);
+        Node node = taskList.linkLast(task);
         taskIdToNode.put(id, node);
     }
 
@@ -33,71 +96,13 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         if (taskIdToNode.containsKey(id)) {
             Node node = taskIdToNode.get(id);
-            removeNode(node);
+            taskList.removeNode(node);
             taskIdToNode.remove(id);
         }
     }
 
     @Override
     public List<Task> getHistory() {
-        return getTasks();
-    }
-
-    private Node linkLast(Task task) {
-        if (task == null) {
-            return null;
-        }
-        Node oldTail = tail;
-        Task taskCopy = new Task(task);
-        Node newNode = new Node(oldTail, taskCopy, null);
-        tail = newNode;
-
-        if (oldTail == null) {
-            head = tail;
-        } else {
-            oldTail.setNext(newNode);
-        }
-
-        ++size;
-        return tail;
-    }
-
-    private void removeNode(Node node) {
-        if (node == null) {
-            return;
-        }
-        Node prev = node.getPrev();
-        Node next = node.getNext();
-
-        if (prev == null) {
-            head = next;
-        } else {
-            prev.setNext(next);
-            node.setPrev(null);
-        }
-
-        if (next == null) {
-            tail = prev;
-        } else {
-            next.setPrev(prev);
-            node.setNext(null);
-        }
-
-        node.setTask(null);
-        --size;
-    }
-
-    private List<Task> getTasks() {
-        if (head == null) {
-            return null;
-        }
-        ArrayList<Task> tasks = new ArrayList<>();
-        Node currNode = head;
-
-        while (currNode != null) {
-            tasks.add(currNode.getTask());
-            currNode = currNode.getNext();
-        }
-        return tasks;
+        return taskList.getTasks();
     }
 }
