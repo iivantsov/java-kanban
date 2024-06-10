@@ -5,11 +5,14 @@ import ru.yandex.practicum.kanban.service.api.HistoryManager;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 
 public class InMemoryHistoryManager implements HistoryManager {
+    private final TaskLinkedList taskList = new TaskLinkedList();
+    private final Map<Integer, Node> taskIdToNode = new HashMap<>();
 
-    private class TaskLinkedList {
+    private static class TaskLinkedList {
         private Node head = null;
         private Node tail = null;
         private int size = 0;
@@ -72,9 +75,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             return tasks;
         }
     }
-
-    private final TaskLinkedList taskList = new TaskLinkedList();
-    private final HashMap<Integer, Node> taskIdToNode = new HashMap<>();
 
     @Override
     public void add(Task task) {
