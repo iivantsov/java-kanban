@@ -8,12 +8,14 @@ public class Task {
     protected String description;
     protected Integer id;
     protected TaskStatus status;
+    protected TaskTypes type;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         id = INVALID_ID;
         status = TaskStatus.NEW;
+        type = TaskTypes.TASK;
     }
 
     public Task(Task other) {
@@ -21,6 +23,7 @@ public class Task {
         this.description = other.description;
         this.id = other.id;
         this.status = other.status;
+        this.type = other.type;
     }
 
     public String getName() {
@@ -55,6 +58,10 @@ public class Task {
         this.status = status;
     }
 
+    public TaskTypes getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -69,7 +76,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, description, id, status, type);
     }
 
     @Override
@@ -77,8 +84,9 @@ public class Task {
         return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
                 ", id=" + id +
+                ", status=" + status +
+                ", type=" + type +
                 '}';
     }
 }

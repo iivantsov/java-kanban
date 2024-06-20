@@ -6,6 +6,7 @@ public class Subtask extends Task {
     public Subtask(String name, String description) {
         super(name, description);
         epicID = INVALID_ID;
+        type = TaskTypes.SUBTASK;
     }
 
     public Integer getEpicID() {
@@ -22,11 +23,12 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return "Subtask{" +
-                "name='" + name + '\'' +
+                "epicID=" + epicID +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
                 ", id=" + id +
-                ", epicID=" + epicID +
+                ", status=" + status +
+                ", type=" + type +
                 '}';
     }
 }
