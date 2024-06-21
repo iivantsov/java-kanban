@@ -33,4 +33,22 @@ class TaskTest {
 
         Assertions.assertEquals(task1, task2, "Same IDs, but are not equals!");
     }
+
+    @Test
+    public void testFromStringProducesEqualTaskFromToStringOutput() {
+        task1.setId(123);
+        task1.setName("Easy");
+        task1.setDescription("Say Hello World!");
+        task1.setStatus(TaskStatus.DONE);
+
+        String task1AsString = task1.toString();
+        Task task1FromString = task1.fromString(task1AsString);
+
+        Assertions.assertEquals(task1.getId(), task1FromString.getId(), "IDs are not equal!");
+        Assertions.assertEquals(task1.getType(), task1FromString.getType(), "Types are not equal!");
+        Assertions.assertEquals(task1.getName(), task1FromString.getName(), "Names are not equal!");
+        Assertions.assertEquals(task1.getStatus(), task1FromString.getStatus(), "Statuses are not equal!");
+        Assertions.assertEquals(task1.getDescription(), task1FromString.getDescription(),
+                "Descriptions are not equal!");
+    }
 }
