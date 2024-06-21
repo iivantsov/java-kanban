@@ -44,8 +44,7 @@ public class Epic extends Task {
         return builder.toString();
     }
 
-    @Override
-    public Epic fromString(String epicAsString) {
+    public static Epic fromString(String epicAsString) {
         String[] fields = epicAsString.split(DELIMITER);
 
         Integer id = Integer.parseInt(fields[ID_INDEX]);

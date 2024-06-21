@@ -5,9 +5,9 @@ import java.util.Objects;
 public class Task {
     public static final Integer INVALID_ID = 0;
 
-    protected static final String DELIMITER = ",";
+    public static final String DELIMITER = ",";
     protected static final int ID_INDEX = 0;
-    protected static final int TYPE_INDEX = 1;
+    public static final int TYPE_INDEX = 1;
     protected static final int NAME_INDEX = 2;
     protected static final int STATUS_INDEX = 3;
     protected static final int DESCRIPTION_INDEX = 4;
@@ -96,7 +96,7 @@ public class Task {
         return String.join(DELIMITER, id.toString(), type.toString(), name, status.toString(), description);
     }
 
-    public Task fromString(String taskAsString) {
+    public static Task fromString(String taskAsString) {
         String[] fields = taskAsString.split(DELIMITER);
 
         Integer id = Integer.parseInt(fields[ID_INDEX]);

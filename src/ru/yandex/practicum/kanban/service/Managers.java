@@ -5,7 +5,7 @@ import ru.yandex.practicum.kanban.service.impl.*;
 
 public class Managers {
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        return new FileBackedTaskManager("data.csv");
     }
 
     public static HistoryManager getDefaultHistory() {

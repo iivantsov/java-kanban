@@ -30,7 +30,7 @@ class EpicTest extends TaskTest {
         epic.setStatus(TaskStatus.DONE);
 
         String epicAsString = epic.toString();
-        Epic epicFromString = epic.fromString(epicAsString);
+        Epic epicFromString = Epic.fromString(epicAsString);
 
         Assertions.assertEquals(epic.getId(), epicFromString.getId(), "IDs are not equal!");
         Assertions.assertEquals(epic.getType(), epicFromString.getType(), "Types are not equal!");

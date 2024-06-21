@@ -31,7 +31,7 @@ class SubtaskTest extends TaskTest {
         subtask.setEpicID(321);
 
         String subtaskAsString = subtask.toString();
-        Subtask subtaskFromString = subtask.fromString(subtaskAsString);
+        Subtask subtaskFromString = Subtask.fromString(subtaskAsString);
 
         Assertions.assertEquals(subtask.getId(), subtaskFromString.getId(), "IDs are not equal!");
         Assertions.assertEquals(subtask.getType(), subtaskFromString.getType(), "Types are not equal!");
