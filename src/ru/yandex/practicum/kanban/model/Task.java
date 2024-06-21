@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Task {
     public static final Integer INVALID_ID = 0;
+    protected static final String DELIMITER = ",";
     protected String name;
     protected String description;
     protected Integer id;
@@ -71,7 +72,7 @@ public class Task {
             return false;
         }
 
-        return  Objects.equals(id, task.id);
+        return Objects.equals(id, task.id);
     }
 
     @Override
@@ -81,12 +82,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                ", type=" + type +
-                '}';
+        return String.join(DELIMITER, id.toString(), type.toString(), name, status.toString(), description);
     }
 }
