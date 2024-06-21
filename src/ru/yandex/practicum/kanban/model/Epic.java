@@ -59,8 +59,7 @@ public class Epic extends Task {
         epic.setStatus(status);
         epic.setType(type);
 
-        for (int subtaskIndex = 0; subtaskIndex < numberOfSubtasks; ++subtaskIndex)
-        {
+        for (int subtaskIndex = 0; subtaskIndex < numberOfSubtasks; ++subtaskIndex) {
             int parseIndex = subtaskIndex + NUMBER_OF_SUBTASKS_INDEX;
             Integer subtaskID = Integer.parseInt(fields[parseIndex]);
             epic.addSubtaskID(subtaskID);

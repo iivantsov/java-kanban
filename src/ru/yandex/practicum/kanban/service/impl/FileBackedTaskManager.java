@@ -24,6 +24,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             List<String> fileLines = Files.readAllLines(manager.getFilePath());
             fileLines.remove(FILE_HEADER); // Remove Header
+            int maxID = 0;
+            int id = 0;
 
             for (String line : fileLines) {
                 String[] fields = line.split(Task.DELIMITER);
@@ -32,18 +34,27 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 switch (type) {
                     case TaskTypes.TASK -> {
                         Task task = Task.fromString(line);
-                        manager.tasks.put(task.getId(), task);
+                        id = task.getId();
+                        manager.tasks.put(id, task);
                     }
                     case TaskTypes.EPIC -> {
                         Epic epic = Epic.fromString(line);
-                        manager.epics.put(epic.getId(), epic);
+                        id = epic.getId();
+                        manager.epics.put(id, epic);
                     }
                     case TaskTypes.SUBTASK -> {
                         Subtask subtask = Subtask.fromString(line);
-                        manager.subtasks.put(subtask.getId(), subtask);
+                        id = subtask.getId();
+                        manager.subtasks.put(id, subtask);
                     }
                 }
+
+                if (id > maxID) {
+                    maxID = id;
+                }
             }
+
+            manager.nextID = maxID + 1;
         } catch (IOException e) {
             throw new ManagerLoadException(e.getMessage());
         }
