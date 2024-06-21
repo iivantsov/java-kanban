@@ -4,13 +4,10 @@ import ru.yandex.practicum.kanban.model.*;
 import ru.yandex.practicum.kanban.service.api.*;
 import ru.yandex.practicum.kanban.service.Managers;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private Integer nextID = 1;
+    protected Integer nextID = 1;
     protected final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
@@ -234,5 +231,25 @@ public class InMemoryTaskManager implements TaskManager {
             epicStatus = TaskStatus.IN_PROGRESS;
         }
         epic.setStatus(epicStatus);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof InMemoryTaskManager that)) {
+            return false;
+        }
+
+        return Objects.equals(nextID, that.nextID)
+                && Objects.equals(tasks, that.tasks)
+                && Objects.equals(epics, that.epics)
+                && Objects.equals(subtasks, that.subtasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nextID, tasks, epics, subtasks);
     }
 }
