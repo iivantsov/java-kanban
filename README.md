@@ -18,3 +18,6 @@ Any other workflow is not supported.
 - Removed limit on history depth
 - History feature reimplemented to eliminate duplicates
 - Test coverage improved
+### Version: 4.0
+#### Sprint-7 improvements added
+- App data stored in file

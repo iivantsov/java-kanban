@@ -26,8 +26,7 @@ public class Subtask extends Task {
         return String.join(DELIMITER, super.toString(), epicID.toString());
     }
 
-    @Override
-    public Subtask fromString(String subtaskAsString) {
+    public static Subtask fromString(String subtaskAsString) {
         String[] fields = subtaskAsString.split(DELIMITER);
 
         Integer id = Integer.parseInt(fields[ID_INDEX]);
