@@ -33,13 +33,13 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "subtaskIDs=" + subtaskIDs +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                ", type=" + type +
-                '}';
+        StringBuilder builder = new StringBuilder(super.toString());
+
+        builder.append(DELIMITER).append(subtaskIDs.size());
+        for (Integer id : subtaskIDs) {
+            builder.append(DELIMITER).append(id.toString());
+        }
+
+        return builder.toString();
     }
 }
