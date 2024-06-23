@@ -5,13 +5,6 @@ import java.util.Objects;
 public class Task {
     public static final Integer INVALID_ID = 0;
 
-    public static final String DELIMITER = ",";
-    protected static final int ID_INDEX = 0;
-    public static final int TYPE_INDEX = 1;
-    protected static final int NAME_INDEX = 2;
-    protected static final int STATUS_INDEX = 3;
-    protected static final int DESCRIPTION_INDEX = 4;
-
     protected String name;
     protected String description;
     protected Integer id;
@@ -93,23 +86,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.join(DELIMITER, id.toString(), type.toString(), name, status.toString(), description);
-    }
-
-    public static Task fromString(String taskAsString) {
-        String[] fields = taskAsString.split(DELIMITER);
-
-        Integer id = Integer.parseInt(fields[ID_INDEX]);
-        TaskTypes type = TaskTypes.valueOf(fields[TYPE_INDEX]);
-        String name = fields[NAME_INDEX];
-        TaskStatus status = TaskStatus.valueOf(fields[STATUS_INDEX]);
-        String description = fields[DESCRIPTION_INDEX];
-
-        Task task = new Task(name, description);
-        task.setId(id);
-        task.setStatus(status);
-        task.setType(type);
-
-        return task;
+        return "Task{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

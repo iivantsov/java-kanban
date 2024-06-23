@@ -14,6 +14,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String DEFAULT_DIRECTORY = "resources";
     private final Path filePath;
 
+    public static final String DELIMITER = ",";
+    protected static final int ID_INDEX = 0;
+    public static final int TYPE_INDEX = 1;
+    protected static final int NAME_INDEX = 2;
+    protected static final int STATUS_INDEX = 3;
+    protected static final int DESCRIPTION_INDEX = 4;
+    private static final int EPIC_ID_INDEX = 5;
+    private static final int NUMBER_OF_SUBTASKS_INDEX = 5;
+
     public FileBackedTaskManager(String fileName) {
         filePath = Paths.get(DEFAULT_DIRECTORY, fileName);
     }
@@ -25,28 +34,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             List<String> fileLines = Files.readAllLines(manager.getFilePath());
             fileLines.remove(FILE_HEADER); // Remove Header
             int maxID = 0;
-            int id = 0;
 
             for (String line : fileLines) {
-                String[] fields = line.split(Task.DELIMITER);
-                TaskTypes type = TaskTypes.valueOf(fields[Task.TYPE_INDEX]);
+                Task task = fromString(line);
+                int id = task.getId();
 
-                switch (type) {
-                    case TaskTypes.TASK -> {
-                        Task task = Task.fromString(line);
-                        id = task.getId();
-                        manager.tasks.put(id, task);
-                    }
-                    case TaskTypes.EPIC -> {
-                        Epic epic = Epic.fromString(line);
-                        id = epic.getId();
-                        manager.epics.put(id, epic);
-                    }
-                    case TaskTypes.SUBTASK -> {
-                        Subtask subtask = Subtask.fromString(line);
-                        id = subtask.getId();
-                        manager.subtasks.put(id, subtask);
-                    }
+                switch (task.getType()) {
+                    case TaskTypes.TASK -> manager.tasks.put(id, task);
+                    case TaskTypes.EPIC -> manager.epics.put(id, (Epic) task);
+                    case TaskTypes.SUBTASK -> manager.subtasks.put(id, (Subtask) task);
                 }
 
                 if (id > maxID) {
@@ -72,21 +68,85 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
             for (Task task : tasks.values()) {
                 writer.newLine();
-                writer.write(task.toString());
+                writer.write(toString(task));
             }
 
             for (Epic epic : epics.values()) {
                 writer.newLine();
-                writer.write(epic.toString());
+                writer.write(toString(epic));
             }
 
             for (Subtask subtask : subtasks.values()) {
                 writer.newLine();
-                writer.write(subtask.toString());
+                writer.write(toString(subtask));
             }
         } catch (IOException e) {
             throw new ManagerSaveException(e.getMessage());
         }
+    }
+
+    public String toString(Task task) {
+        return String.join(DELIMITER,
+                task.getId().toString(),
+                task.getType().toString(),
+                task.getName(),
+                task.getStatus().toString(),
+                task.getDescription());
+    }
+
+    public String toString(Subtask subtask) {
+        return String.join(DELIMITER, toString((Task) subtask), subtask.getEpicID().toString());
+    }
+
+    public String toString(Epic epic) {
+        StringBuilder builder = new StringBuilder(toString((Task) epic));
+
+        builder.append(DELIMITER).append(epic.getAllSubtaskIDs().size());
+        for (Integer id : epic.getAllSubtaskIDs()) {
+            builder.append(DELIMITER).append(id.toString());
+        }
+
+        return builder.toString();
+    }
+
+    public static Task fromString(String taskAsString) {
+        String[] fields = taskAsString.split(DELIMITER);
+
+        Integer id = Integer.parseInt(fields[ID_INDEX]);
+        TaskTypes type = TaskTypes.valueOf(fields[TYPE_INDEX]);
+        String name = fields[NAME_INDEX];
+        TaskStatus status = TaskStatus.valueOf(fields[STATUS_INDEX]);
+        String description = fields[DESCRIPTION_INDEX];
+
+        Task task = null;
+
+        switch (type) {
+            case TaskTypes.TASK -> task = new Task(name, description);
+            case TaskTypes.EPIC -> {
+                Epic epic = new Epic(name, description);
+                int numberOfSubtasks = Integer.parseInt(fields[NUMBER_OF_SUBTASKS_INDEX]);
+
+                for (int subtaskIndex = 0; subtaskIndex < numberOfSubtasks; ++subtaskIndex) {
+                    int parseIndex = subtaskIndex + NUMBER_OF_SUBTASKS_INDEX + 1;
+                    Integer subtaskID = Integer.parseInt(fields[parseIndex]);
+                    epic.addSubtaskID(subtaskID);
+                }
+
+                task = epic;
+            }
+            case TaskTypes.SUBTASK -> {
+                Subtask subtask = new Subtask(name, description);
+                Integer epicID = Integer.parseInt(fields[EPIC_ID_INDEX]);
+                subtask.setEpicID(epicID);
+                task = subtask;
+            }
+        }
+
+        task.setId(id);
+        task.setStatus(status);
+        task.setType(type);
+
+        return task;
     }
 
     // Tasks methods
