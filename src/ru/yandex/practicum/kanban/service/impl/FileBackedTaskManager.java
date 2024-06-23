@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String FILE_HEADER = "ID,Type,Name,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
-    private static final String DEFAULT_DIRECTORY = "src/ru/yandex/practicum/kanban/resources/";
+    private static final String DEFAULT_DIRECTORY = "resources";
     private final Path filePath;
 
     public FileBackedTaskManager(String fileName) {
