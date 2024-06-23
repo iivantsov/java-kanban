@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private static final int NUMBER_OF_SUBTASKS_INDEX = 5;
     private final List<Integer> subtaskIDs;
 
     public Epic(String name, String description) {
@@ -34,37 +33,13 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(super.toString());
-
-        builder.append(DELIMITER).append(subtaskIDs.size());
-        for (Integer id : subtaskIDs) {
-            builder.append(DELIMITER).append(id.toString());
-        }
-
-        return builder.toString();
-    }
-
-    public static Epic fromString(String epicAsString) {
-        String[] fields = epicAsString.split(DELIMITER);
-
-        Integer id = Integer.parseInt(fields[ID_INDEX]);
-        TaskTypes type = TaskTypes.valueOf(fields[TYPE_INDEX]);
-        String name = fields[NAME_INDEX];
-        TaskStatus status = TaskStatus.valueOf(fields[STATUS_INDEX]);
-        String description = fields[DESCRIPTION_INDEX];
-        int numberOfSubtasks = Integer.parseInt(fields[NUMBER_OF_SUBTASKS_INDEX]);
-
-        Epic epic = new Epic(name, description);
-        epic.setId(id);
-        epic.setStatus(status);
-        epic.setType(type);
-
-        for (int subtaskIndex = 0; subtaskIndex < numberOfSubtasks; ++subtaskIndex) {
-            int parseIndex = subtaskIndex + NUMBER_OF_SUBTASKS_INDEX;
-            Integer subtaskID = Integer.parseInt(fields[parseIndex]);
-            epic.addSubtaskID(subtaskID);
-        }
-
-        return epic;
+        return "Epic{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", subtaskIDs=" + subtaskIDs +
+                '}';
     }
 }
