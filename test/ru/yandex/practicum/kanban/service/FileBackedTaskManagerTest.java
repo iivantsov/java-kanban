@@ -12,6 +12,8 @@ import ru.yandex.practicum.kanban.service.impl.FileBackedTaskManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManagerTest {
     private FileBackedTaskManager manager;
@@ -26,11 +28,17 @@ public class FileBackedTaskManagerTest {
         epic = new Epic("Kanban App", "Working on Kanban App for this week");
         Integer workEpicID = manager.createEpic(epic);
 
-        subtask1 = new Subtask("Presentation", "Prepare a basic presentation layout");
+        Duration subtaskDuration = Duration.ofMinutes(30);
+
+        subtask1 = new Subtask("Presentation", "Prepare a basic presentation layout",
+                LocalDateTime.now(), subtaskDuration);
+
         subtask1.setEpicID(workEpicID);
         Integer workSubtask1ID = manager.createSubtask(subtask1);
 
-        Subtask subtask2 = new Subtask("Test report", "Prepare a backend test report");
+        Subtask subtask2 = new Subtask("Test report", "Prepare a backend test report",
+                LocalDateTime.now().plus(subtaskDuration), subtaskDuration);
+
         subtask2.setEpicID(workEpicID);
         Integer workSubtask2ID = manager.createSubtask(subtask2);
     }
@@ -66,7 +74,9 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void testFromStringProducesEqualTaskFromToStringOutput() {
-        Task task = new Task("Easy", "Say Hello World!");
+        Task task = new Task("Easy", "Say Hello World!",
+                LocalDateTime.now().plusMonths(1), Duration.ofMinutes(45));
+
         task.setId(123);
         task.setStatus(TaskStatus.DONE);
 

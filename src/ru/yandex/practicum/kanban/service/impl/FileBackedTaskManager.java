@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private static final String FILE_HEADER = "ID,Type,Name,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
     private static final String DEFAULT_DIRECTORY = "resources";
     private final Path filePath;
 
@@ -18,10 +19,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     protected static final int ID_INDEX = 0;
     public static final int TYPE_INDEX = 1;
     protected static final int NAME_INDEX = 2;
-    protected static final int STATUS_INDEX = 3;
-    protected static final int DESCRIPTION_INDEX = 4;
-    private static final int EPIC_ID_INDEX = 5;
-    private static final int NUMBER_OF_SUBTASKS_INDEX = 5;
+    protected static final int START_DATE_TIME_INDEX = 3;
+    protected static final int DURATION_INDEX = 4;
+    protected static final int STATUS_INDEX = 5;
+    protected static final int DESCRIPTION_INDEX = 6;
+    private static final int EPIC_ID_INDEX = 7;
+    private static final int NUMBER_OF_SUBTASKS_INDEX = 7;
+    private static final String FILE_HEADER =
+            "ID,Type,Name,StartDateTime,Duration,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
 
     public FileBackedTaskManager(String fileName) {
         filePath = Paths.get(DEFAULT_DIRECTORY, fileName);
@@ -86,10 +91,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public String toString(Task task) {
+        Long duration = task.getDuration().toMinutes();
         return String.join(DELIMITER,
                 task.getId().toString(),
                 task.getType().toString(),
                 task.getName(),
+                task.getStartDateTime().toString(),
+                duration.toString(),
                 task.getStatus().toString(),
                 task.getDescription());
     }
@@ -115,13 +123,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Integer id = Integer.parseInt(fields[ID_INDEX]);
         TaskTypes type = TaskTypes.valueOf(fields[TYPE_INDEX]);
         String name = fields[NAME_INDEX];
+        LocalDateTime startDateTime = LocalDateTime.parse(fields[START_DATE_TIME_INDEX]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(fields[DURATION_INDEX]));
         TaskStatus status = TaskStatus.valueOf(fields[STATUS_INDEX]);
         String description = fields[DESCRIPTION_INDEX];
 
         Task task = null;
 
         switch (type) {
-            case TaskTypes.TASK -> task = new Task(name, description);
+            case TaskTypes.TASK -> task = new Task(name, description, startDateTime, duration);
             case TaskTypes.EPIC -> {
                 Epic epic = new Epic(name, description);
                 int numberOfSubtasks = Integer.parseInt(fields[NUMBER_OF_SUBTASKS_INDEX]);
@@ -135,7 +145,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 task = epic;
             }
             case TaskTypes.SUBTASK -> {
-                Subtask subtask = new Subtask(name, description);
+                Subtask subtask = new Subtask(name, description, startDateTime, duration);
                 Integer epicID = Integer.parseInt(fields[EPIC_ID_INDEX]);
                 subtask.setEpicID(epicID);
                 task = subtask;

@@ -1,10 +1,14 @@
 package ru.yandex.practicum.kanban.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class Subtask extends Task {
     private Integer epicID;
 
-    public Subtask(String name, String description) {
-        super(name, description);
+    public Subtask(String name, String description, LocalDateTime startDateTime, Duration duration) {
+        super(name, description, startDateTime, duration);
         epicID = INVALID_ID;
         type = TaskTypes.SUBTASK;
     }
@@ -21,11 +25,18 @@ public class Subtask extends Task {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode() + epicID);
+    }
+
+    @Override
     public String toString() {
         return "Subtask{" +
                 "id=" + getId() +
                 ", type=" + getType() +
                 ", name='" + getName() + '\'' +
+                ", startTime=" + startDateTime +
+                ", duration=" + duration.toMinutes() +
                 ", status=" + getStatus() +
                 ", description='" + getDescription() + '\'' +
                 ", epicID=" + getEpicID() +
