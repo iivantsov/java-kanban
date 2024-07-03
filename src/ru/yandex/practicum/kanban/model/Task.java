@@ -1,5 +1,7 @@
 package ru.yandex.practicum.kanban.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -11,12 +13,17 @@ public class Task {
     protected TaskStatus status;
     protected TaskTypes type;
 
-    public Task(String name, String description) {
+    protected LocalDateTime startDateTime;
+    protected Duration duration;
+
+    public Task(String name, String description, LocalDateTime startDateTime, Duration duration) {
         this.name = name;
         this.description = description;
         id = INVALID_ID;
         status = TaskStatus.NEW;
         type = TaskTypes.TASK;
+        this.startDateTime = startDateTime;
+        this.duration = duration;
     }
 
     public Task(Task other) {
@@ -25,6 +32,8 @@ public class Task {
         this.id = other.id;
         this.status = other.status;
         this.type = other.type;
+        this.startDateTime = other.startDateTime;
+        this.duration = other.duration;
     }
 
     public String getName() {
@@ -67,6 +76,18 @@ public class Task {
         this.type = type;
     }
 
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return startDateTime.plus(duration);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,7 +102,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status, type);
+        return Objects.hash(name, description, id, status, type, startDateTime, duration);
     }
 
     @Override
@@ -90,6 +111,8 @@ public class Task {
                 "id=" + getId() +
                 ", type=" + getType() +
                 ", name='" + getName() + '\'' +
+                ", startDateTime=" + startDateTime +
+                ", duration=" + duration.toMinutes() +
                 ", status=" + getStatus() +
                 ", description='" + getDescription() + '\'' +
                 '}';
