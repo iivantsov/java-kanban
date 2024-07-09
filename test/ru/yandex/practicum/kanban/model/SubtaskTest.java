@@ -13,9 +13,10 @@ class SubtaskTest extends TaskTest {
     @BeforeEach
     @Override
     protected void testInit() {
+        LocalDateTime startDateTime = LocalDateTime.now();
         Duration duration = Duration.ofMinutes(30);
-        task1 = new Subtask("NAME", "DESCRIPTION", LocalDateTime.now(), duration);
-        task2 = new Subtask("NAME", "DESCRIPTION", LocalDateTime.now().plus(duration), duration);
+        task1 = new Subtask("NAME", "DESCRIPTION", startDateTime, duration);
+        task2 = new Subtask("NAME", "DESCRIPTION", startDateTime, duration);
     }
 
     @Test

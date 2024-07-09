@@ -20,11 +20,13 @@ public class Main {
         Task hobbyTask = new Task("Violin", "Try to play Vivaldi \"The Four Seasons\"",
                 startTime, duration);
         Integer hobbyTaskID = taskManager.createTask(hobbyTask);
+        startTime = startTime.plus(duration);
         testStage1Log += "Task id=" + hobbyTaskID + ", ";
 
         Task houseTask = new Task("Cleaning", "Vacuum and wash the floors at home",
-                startTime.plus(duration), duration);
+                startTime, duration);
         Integer houseTaskID = taskManager.createTask(houseTask);
+        startTime = startTime.plus(duration);
         testStage1Log += "Task id=" + houseTaskID + ", ";
 
         Epic workEpic = new Epic("Kanban App", "Working on Kanban App for this week");
@@ -32,21 +34,24 @@ public class Main {
         testStage1Log += "Epic id=" + workEpicID + ", ";
 
         Subtask workSubtask1 = new Subtask("Presentation", "Prepare a basic presentation layout",
-                startTime.plus(duration), duration);
+                startTime, duration);
         workSubtask1.setEpicID(workEpicID);
         Integer workSubtask1ID = taskManager.createSubtask(workSubtask1);
+        startTime = startTime.plus(duration);
         testStage1Log += "Subtask id=" + workSubtask1ID + ", ";
 
         Subtask workSubtask2 = new Subtask("Test report", "Prepare a backend test report",
-                startTime.plus(duration), duration);
+                startTime, duration);
         workSubtask2.setEpicID(workEpicID);
         Integer workSubtask2ID = taskManager.createSubtask(workSubtask2);
+        startTime = startTime.plus(duration);
         testStage1Log += "Subtask id=" + workSubtask2ID + ", ";
 
         Subtask workSubtask3 = new Subtask("Bonus", "Prepare a list of developers for bonus payment",
-                startTime.plus(duration), duration);
+                startTime, duration);
         workSubtask3.setEpicID(workEpicID);
         Integer workSubtask3ID = taskManager.createSubtask(workSubtask3);
+        startTime = startTime.plus(duration);
         testStage1Log += "Subtask id=" + workSubtask3ID + ", ";
 
         Epic educationEpic = new Epic("Education", "List of education tasks for the week");
@@ -54,7 +59,7 @@ public class Main {
         testStage1Log += "Epic id=" + educationEpicID + ", ";
 
         Subtask educationSubtask1 = new Subtask("Chinese", "Translate a few short poems",
-                startTime.plus(duration), duration);
+                startTime, duration);
         educationSubtask1.setEpicID(educationEpicID);
         Integer educationSubtask1ID = taskManager.createSubtask(educationSubtask1);
         testStage1Log += "Subtask id=" + educationSubtask1ID;

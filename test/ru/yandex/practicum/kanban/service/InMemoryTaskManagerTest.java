@@ -18,14 +18,19 @@ class InMemoryTaskManagerTest {
     static private final String NEW_EPIC1_DESCRIPTION = "Test Epic";
     private Subtask newSubtask1;
     private Integer newSubtask1ID;
+    private LocalDateTime startDateTime;
     private final Duration defaultDuration = Duration.ofMinutes(30);
 
     @BeforeEach
     public void testInit() {
         taskManager = Managers.getDefault();
+        startDateTime = LocalDateTime.now();
+
         newEpic1 = new Epic("Epic#1", NEW_EPIC1_DESCRIPTION);
         newEpic1ID = taskManager.createEpic(newEpic1);
-        newSubtask1 = new Subtask("Subtask#1", "Test Subtask", LocalDateTime.now(), defaultDuration);
+
+        newSubtask1 = new Subtask("Subtask#1", "Test Subtask", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         newSubtask1.setEpicID(newEpic1ID);
         newSubtask1ID = taskManager.createSubtask(newSubtask1);
     }
@@ -33,7 +38,8 @@ class InMemoryTaskManagerTest {
     @Test
     public void testCreateOneTaskAndOneEpicWithTwoSubtasksSuccessfullyCreatesAllItemsThatCanBeGetById() {
         // Task
-        Task newTask = new Task("Task", "Test Task", LocalDateTime.now(), defaultDuration);
+        Task newTask = new Task("Task", "Test Task", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         Integer newTaskID = taskManager.createTask(newTask);
         Task registeredTask = taskManager.getTaskByID(newTaskID);
 
@@ -41,9 +47,8 @@ class InMemoryTaskManagerTest {
         assertEquals(newTask, registeredTask, "Added and stored Tasks are not equals!");
 
         // Epic & Subtasks
-        LocalDateTime task2StartDateTime = LocalDateTime.now().plus(newSubtask1.getDuration());
-        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask",
-                task2StartDateTime, defaultDuration);
+        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
 
@@ -90,10 +95,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void testCreateNewSubtaskAndUpdateExistedSubtaskWithDoneStatusChangesEpicStatusToInProgress() {
-        LocalDateTime task2StartDateTime = LocalDateTime.now().plus(newSubtask1.getDuration());
-        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask",
-                task2StartDateTime, defaultDuration);
-
+        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
         newSubtask1.setStatus(TaskStatus.DONE);
@@ -106,10 +109,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void testRemoveDoneSubtaskFromEpicWithNewAndDoneSubtasksChangesEpicStatusToNew() {
-        LocalDateTime task2StartDateTime = LocalDateTime.now().plus(newSubtask1.getDuration());
-        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask",
-                task2StartDateTime, defaultDuration);
-
+        Subtask newSubtask2 = new Subtask("Subtask#2", "Test Subtask", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
         newSubtask1.setStatus(TaskStatus.DONE);
@@ -176,10 +177,8 @@ class InMemoryTaskManagerTest {
     @Test
     public void testRemoveSubtaskByIdDeletesViewedSubtaskFromHistory() {
         // Add new Subtask2 to Epic1
-        LocalDateTime task2StartDateTime = LocalDateTime.now().plus(newSubtask1.getDuration());
-        Subtask newSubtask2 = new Subtask("Subtask#2","Test Subtask",
-                task2StartDateTime, defaultDuration);
-
+        Subtask newSubtask2 = new Subtask("Subtask#2","Test Subtask", startDateTime, defaultDuration);
+        startDateTime = startDateTime.plus(defaultDuration);
         newSubtask2.setEpicID(newEpic1ID);
         Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
         // View all created Subtasks
