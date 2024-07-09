@@ -3,7 +3,6 @@ package ru.yandex.practicum.kanban.service.api;
 import ru.yandex.practicum.kanban.model.*;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public interface TaskManager {
 
@@ -12,7 +11,7 @@ public interface TaskManager {
     List<Task> getPrioritizedTasks();
 
     // Tasks methods
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
     Task getTaskByID(Integer id);
 
@@ -25,7 +24,7 @@ public interface TaskManager {
     void removeAllTasks();
 
     // Subtasks methods
-    ArrayList<Subtask> getAllSubtasks();
+    List<Subtask> getAllSubtasks();
 
     Subtask getSubtaskByID(Integer id);
 
@@ -38,11 +37,11 @@ public interface TaskManager {
     void removeAllSubtasks();
 
     // Epics methods
-    ArrayList<Epic> getAllEpic();
+    List<Epic> getAllEpic();
 
     Epic getEpicByID(Integer id);
 
-    ArrayList<Subtask> getAllSubtasksByEpicID(Integer epicID);
+    List<Subtask> getAllSubtasksByEpicID(Integer epicID);
 
     Integer createEpic(Epic epic);
 
