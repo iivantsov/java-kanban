@@ -91,13 +91,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public String toString(Task task) {
-        Long duration = task.getDuration().toMinutes();
+        long duration = task.getDuration().toMinutes();
         return String.join(DELIMITER,
                 task.getId().toString(),
                 task.getType().toString(),
                 task.getName(),
                 task.getStartDateTime().toString(),
-                duration.toString(),
+                Long.toString(duration),
                 task.getStatus().toString(),
                 task.getDescription());
     }
@@ -134,6 +134,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             case TaskTypes.TASK -> task = new Task(name, description, startDateTime, duration);
             case TaskTypes.EPIC -> {
                 Epic epic = new Epic(name, description);
+                epic.setStartDateTime(startDateTime);
+                epic.setDuration(duration);
                 int numberOfSubtasks = Integer.parseInt(fields[NUMBER_OF_SUBTASKS_INDEX]);
 
                 for (int subtaskIndex = 0; subtaskIndex < numberOfSubtasks; ++subtaskIndex) {

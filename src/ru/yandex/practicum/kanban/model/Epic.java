@@ -8,13 +8,11 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private final List<Integer> subtaskIDs;
-    private LocalDateTime endDateTime;
 
     public Epic(String name, String description) {
         super(name, description, LocalDateTime.now(), Duration.ZERO);
         subtaskIDs = new ArrayList<>();
         type = TaskTypes.EPIC;
-        endDateTime = null;
     }
 
     public List<Integer> getAllSubtaskIDs() {
@@ -37,13 +35,8 @@ public class Epic extends Task {
     }
 
     @Override
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode() + subtaskIDs.hashCode() + endDateTime.hashCode());
+        return Objects.hash(super.hashCode() + subtaskIDs.hashCode());
     }
 
     @Override

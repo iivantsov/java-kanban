@@ -80,12 +80,33 @@ public class Task {
         return startDateTime;
     }
 
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
     public Duration getDuration() {
         return duration;
     }
 
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     public LocalDateTime getEndDateTime() {
         return startDateTime.plus(duration);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + getId() +
+                ", type=" + getType() +
+                ", name='" + getName() + '\'' +
+                ", startDateTime=" + getStartDateTime() +
+                ", duration=" + getDuration().toMinutes() +
+                ", status=" + getStatus() +
+                ", description='" + getDescription() + '\'' +
+                '}';
     }
 
     @Override
@@ -97,24 +118,19 @@ public class Task {
             return false;
         }
 
-        return Objects.equals(id, task.id);
+        return Objects.equals(getId(), task.getId())
+                && Objects.equals(getStartDateTime(), task.getStartDateTime())
+                && Objects.equals(getDuration(), task.getDuration());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status, type, startDateTime, duration);
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + getId() +
-                ", type=" + getType() +
-                ", name='" + getName() + '\'' +
-                ", startDateTime=" + startDateTime +
-                ", duration=" + duration.toMinutes() +
-                ", status=" + getStatus() +
-                ", description='" + getDescription() + '\'' +
-                '}';
+        return Objects.hash(getName(),
+                getDescription(),
+                getId(),
+                getStatus(),
+                getType(),
+                getStartDateTime(),
+                getDuration());
     }
 }

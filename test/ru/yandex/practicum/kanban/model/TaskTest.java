@@ -13,9 +13,10 @@ class TaskTest {
 
     @BeforeEach
     protected void testInit() {
+        LocalDateTime startDateTime = LocalDateTime.now();
         Duration duration = Duration.ofMinutes(30);
-        task1 = new Task("NAME","DESCRIPTION", LocalDateTime.now(), duration);
-        task2 = new Task("NAME","DESCRIPTION", LocalDateTime.now().plus(duration), duration);
+        task1 = new Task("NAME","DESCRIPTION", startDateTime, duration);
+        task2 = new Task("NAME","DESCRIPTION", startDateTime, duration);
     }
 
     @Test
@@ -28,9 +29,11 @@ class TaskTest {
     @Test
     public void testSetSingleIDToTasksWithDifferentNameDescriptionResultsInTasksAreEquals() {
         int id = 777;
+
         task1.setId(id);
         task1.setName("Easy");
         task1.setDescription("Say Hello World!");
+
         task2.setId(id);
         task2.setName("Hard");
         task2.setDescription("Say Freundschaftsbeziehungen!");

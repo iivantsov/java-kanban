@@ -4,6 +4,8 @@ import ru.yandex.practicum.kanban.model.*;
 import ru.yandex.practicum.kanban.service.api.*;
 import ru.yandex.practicum.kanban.service.Managers;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -12,6 +14,14 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final TreeSet<Task> tasksSortedByDateTime =
+            new TreeSet<>(Comparator.comparing(Task::getStartDateTime));
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return tasksSortedByDateTime.stream().
+                toList();
+    }
 
     @Override
     public List<Task> getHistory() {
@@ -36,6 +46,11 @@ public class InMemoryTaskManager implements TaskManager {
         Integer id = nextID++;
         task.setId(id);
         tasks.put(id, task);
+
+        if (validateByDateTime(task)) {
+            tasksSortedByDateTime.add(task);
+        }
+
         return id;
     }
 
@@ -45,10 +60,15 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
         tasks.put(task.getId(), task);
+
+        if (validateByDateTime(task)) {
+            tasksSortedByDateTime.add(task);
+        }
     }
 
     @Override
     public void removeTaskByID(Integer id) {
+        tasksSortedByDateTime.remove(tasks.get(id));
         tasks.remove(id);
         historyManager.remove(id);
     }
@@ -56,6 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllTasks() {
         for (Integer taskID : tasks.keySet()) {
+            tasksSortedByDateTime.remove(tasks.get(taskID));
             historyManager.remove(taskID);
         }
         tasks.clear();
@@ -83,10 +104,17 @@ public class InMemoryTaskManager implements TaskManager {
         Integer subtaskID = nextID++;
         subtask.setId(subtaskID);
         subtasks.put(subtaskID, subtask);
+
+        if (validateByDateTime(subtask)) {
+            tasksSortedByDateTime.add(subtask);
+        }
+
         Epic epic = epics.get(epicID);
         epic.addSubtaskID(subtaskID);
 
         syncEpicStatus(epicID);
+        computeEpicTiming(epicID);
+
         return subtaskID;
     }
 
@@ -97,7 +125,12 @@ public class InMemoryTaskManager implements TaskManager {
         }
         subtasks.put(subtask.getId(), subtask);
 
+        if (validateByDateTime(subtask)) {
+            tasksSortedByDateTime.add(subtask);
+        }
+
         syncEpicStatus(subtask.getEpicID());
+        computeEpicTiming(subtask.getEpicID());
     }
 
     @Override
@@ -106,6 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         Subtask subtask = subtasks.get(subtaskID);
+        tasksSortedByDateTime.remove(subtask);
         Integer epicID = subtask.getEpicID();
         Epic epic = epics.get(epicID);
         epic.removeSubtaskByID(subtaskID);
@@ -113,11 +147,13 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(subtaskID);
 
         syncEpicStatus(epicID);
+        computeEpicTiming(epicID);
     }
 
     @Override
     public void removeAllSubtasks() {
         for (Integer subtaskID : subtasks.keySet()) {
+            tasksSortedByDateTime.remove(subtasks.get(subtaskID));
             historyManager.remove(subtaskID);
         }
         subtasks.clear();
@@ -125,6 +161,8 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             epic.removeAllSubtaskIDs();
             epic.setStatus(TaskStatus.NEW);
+            epic.setStartDateTime(LocalDateTime.now());
+            epic.setDuration(Duration.ZERO);
         }
     }
 
@@ -180,6 +218,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(epicID);
 
         for (Integer subtaskID : epic.getAllSubtaskIDs()) {
+            tasksSortedByDateTime.remove(subtasks.get(subtaskID));
             subtasks.remove(subtaskID);
             historyManager.remove(subtaskID);
         }
@@ -191,6 +230,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeAllEpic() {
         for (Integer subtaskID : subtasks.keySet()) {
+            tasksSortedByDateTime.remove(subtasks.get(subtaskID));
             historyManager.remove(subtaskID);
         }
         subtasks.clear();
@@ -231,6 +271,47 @@ public class InMemoryTaskManager implements TaskManager {
             epicStatus = TaskStatus.IN_PROGRESS;
         }
         epic.setStatus(epicStatus);
+    }
+
+    private void computeEpicTiming(Integer epicID) {
+        Epic epic = epics.get(epicID);
+
+        List<Subtask> subtasksInEpic = getPrioritizedTasks().stream()
+                .filter(task -> task.getType() == TaskTypes.SUBTASK)
+                .map(task -> (Subtask)task)
+                .filter(subtask -> subtask.getEpicID().equals(epicID))
+                .toList();
+
+        if (subtasksInEpic.isEmpty()) {
+            return;
+        }
+
+        Duration epicDuration = subtasksInEpic.stream()
+                .map(Task::getDuration)
+                .reduce(Duration.ZERO, Duration::plus);
+
+        epic.setDuration(epicDuration);
+        epic.setStartDateTime(subtasksInEpic.getFirst().getStartDateTime());
+    }
+
+    private static boolean checkDateTimeOverlap(Task task1, Task task2) {
+        return task1.getStartDateTime().isBefore(task2.getEndDateTime()) &&
+                task1.getEndDateTime().isAfter(task2.getStartDateTime());
+    }
+
+    private boolean validateByDateTime(Task task) throws DateTimeOverlapException {
+        if (task.getStartDateTime() == null || task.getDuration() == null) {
+            return false;
+        }
+        getPrioritizedTasks().stream()
+                .filter(t -> !t.equals(task))
+                .filter(t -> checkDateTimeOverlap(task, t))
+                .findFirst()
+                .ifPresent(t -> {
+                    throw new DateTimeOverlapException("\n" + task + "\n" + t);
+                });
+
+        return true;
     }
 
     @Override
