@@ -25,6 +25,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     protected static final int DESCRIPTION_INDEX = 6;
     private static final int EPIC_ID_INDEX = 7;
     private static final int NUMBER_OF_SUBTASKS_INDEX = 7;
+    private static final int FILE_HEADER_INDEX = 1;
     private static final String FILE_HEADER =
             "ID,Type,Name,StartDateTime,Duration,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
 
@@ -37,11 +38,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         try {
             List<String> fileLines = Files.readAllLines(manager.getFilePath());
-            fileLines.remove(FILE_HEADER); // Remove Header
+            List<Task> tasksFromFile = fileLines.stream()
+                    .skip(FILE_HEADER_INDEX)
+                    .map(FileBackedTaskManager::fromString)
+                    .toList();
+
             int maxID = 0;
 
-            for (String line : fileLines) {
-                Task task = fromString(line);
+            for (Task task : tasksFromFile) {
                 int id = task.getId();
 
                 switch (task.getType()) {
@@ -70,7 +74,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() throws ManagerSaveException {
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             writer.write(FILE_HEADER);
-
             for (Task task : tasks.values()) {
                 writer.newLine();
                 writer.write(toString(task));
@@ -108,11 +111,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public String toString(Epic epic) {
         StringBuilder builder = new StringBuilder(toString((Task) epic));
-
         builder.append(DELIMITER).append(epic.getAllSubtaskIDs().size());
-        for (Integer id : epic.getAllSubtaskIDs()) {
-            builder.append(DELIMITER).append(id.toString());
-        }
+        epic.getAllSubtaskIDs().forEach(id -> builder.append(DELIMITER).append(id.toString()));
 
         return builder.toString();
     }

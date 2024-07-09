@@ -116,27 +116,17 @@ public class Main {
 
     private static void printTaskManagerTestReport(TaskManager taskManager, String testStageLog) {
         System.out.println(testStageLog + "\n");
-        for (Task task : taskManager.getAllTasks()) {
-            System.out.println(task);
-        }
+        taskManager.getAllTasks().forEach(System.out::println);
         System.out.println();
-
-        for (Epic epic : taskManager.getAllEpic()) {
-            System.out.println(epic);
-        }
+        taskManager.getAllEpic().forEach(System.out::println);
         System.out.println();
-
-        for (Subtask subtask : taskManager.getAllSubtasks()) {
-            System.out.println(subtask);
-        }
+        taskManager.getAllSubtasks().forEach(System.out::println);
         System.out.println();
     }
 
     private static void printHistory(TaskManager taskManager) {
         System.out.println("@ HISTORY");
-        for (Task task : taskManager.getHistory()) {
-            System.out.println(task);
-        }
+        taskManager.getHistory().forEach(System.out::println);
         System.out.println();
     }
 }
