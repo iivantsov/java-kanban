@@ -12,7 +12,6 @@ public class Task {
     protected Integer id;
     protected TaskStatus status;
     protected TaskTypes type;
-
     protected LocalDateTime startDateTime;
     protected Duration duration;
 
