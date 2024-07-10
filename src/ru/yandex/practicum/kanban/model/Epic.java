@@ -10,7 +10,7 @@ public class Epic extends Task {
     private final List<Integer> subtaskIDs;
 
     public Epic(String name, String description) {
-        super(name, description, LocalDateTime.now(), Duration.ZERO);
+        super(name, description, LocalDateTime.MAX, Duration.ZERO);
         subtaskIDs = new ArrayList<>();
         type = TaskTypes.EPIC;
     }

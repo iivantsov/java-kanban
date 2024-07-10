@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 class TaskTest {
     protected Task task1;
     protected Task task2;
+    protected LocalDateTime startDateTime = LocalDateTime.now();
+    protected Duration duration = Duration.ofMinutes(30);
 
     @BeforeEach
     protected void testInit() {
-        LocalDateTime startDateTime = LocalDateTime.now();
-        Duration duration = Duration.ofMinutes(30);
         task1 = new Task("NAME","DESCRIPTION", startDateTime, duration);
         task2 = new Task("NAME","DESCRIPTION", startDateTime, duration);
     }
