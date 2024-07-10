@@ -19,8 +19,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
-        return tasksSortedByDateTime.stream().
-                toList();
+        return tasksSortedByDateTime.stream()
+                .toList();
     }
 
     @Override
@@ -280,7 +280,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         List<Subtask> subtasksInEpic = getPrioritizedTasks().stream()
                 .filter(task -> task.getType() == TaskTypes.SUBTASK)
-                .map(task -> (Subtask)task)
+                .map(task -> (Subtask) task)
                 .filter(subtask -> subtask.getEpicID().equals(epicID))
                 .toList();
 
