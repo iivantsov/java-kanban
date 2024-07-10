@@ -78,8 +78,7 @@ class InMemoryHistoryManagerTest {
         task2ToReplaceTask1.setId(2);
         historyManager.add(task2ToReplaceTask1);
 
-        for (Task task : historyManager.getHistory()) {
-            assertNotEquals(task.getId(), task1Id);
-        }
+        historyManager.getHistory().forEach(task -> assertNotEquals(task.getId(), task1Id,
+                "Task id= " + task1Id +  " was not deleted from history"));
     }
 }

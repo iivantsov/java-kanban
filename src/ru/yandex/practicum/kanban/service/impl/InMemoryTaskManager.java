@@ -204,10 +204,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic) {
-        if (!epics.containsKey(epic.getId())) {
+        Integer id = epic.getId();
+        if (!epics.containsKey(id)) {
             throw new IllegalArgumentException("Epic " + epic.getName() + " was not created!");
         }
-        epics.put(epic.getId(), epic);
+
+        epics.put(id, epic);
+        syncEpicStatus(id);
+        computeEpicTiming(id);
     }
 
     @Override
