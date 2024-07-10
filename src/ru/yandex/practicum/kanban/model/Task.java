@@ -102,6 +102,7 @@ public class Task {
                 ", type=" + getType() +
                 ", name='" + getName() + '\'' +
                 ", startDateTime=" + getStartDateTime() +
+                ", endDateTime=" + getEndDateTime() +
                 ", duration=" + getDuration().toMinutes() +
                 ", status=" + getStatus() +
                 ", description='" + getDescription() + '\'' +

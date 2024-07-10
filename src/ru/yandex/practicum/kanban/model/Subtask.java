@@ -36,6 +36,7 @@ public class Subtask extends Task {
                 ", type=" + getType() +
                 ", name='" + getName() + '\'' +
                 ", startTime=" + getStartDateTime() +
+                ", endDateTime=" + getEndDateTime() +
                 ", duration=" + getDuration().toMinutes() +
                 ", status=" + getStatus() +
                 ", description='" + getDescription() + '\'' +

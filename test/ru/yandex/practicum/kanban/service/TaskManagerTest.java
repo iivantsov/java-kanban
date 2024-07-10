@@ -350,4 +350,14 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(newEpic1.getStatus(),TaskStatus.NEW,
                 "Epic1 status=" + newEpic1.getStatus() + "(NEW expected)");
     }
+
+    @Test
+    public void testEpicEndTimeEqualsLastSubtaskEndTime() {
+        Subtask lastSubtaskInEpic1 = newEpic1.getAllSubtaskIDs().stream()
+                .map(id -> taskManager.getSubtaskByID(id))
+                .toList()
+                .getLast();
+
+        assertEquals(newEpic1.getEndDateTime(), lastSubtaskInEpic1.getEndDateTime(), "Epic end time is wrong!");
+    }
 }

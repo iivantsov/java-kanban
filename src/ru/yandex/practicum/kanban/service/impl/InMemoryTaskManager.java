@@ -294,6 +294,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         epic.setDuration(epicDuration);
         epic.setStartDateTime(subtasksInEpic.getFirst().getStartDateTime());
+        epic.setEndDateTime(subtasksInEpic.getLast().getEndDateTime());
     }
 
     private static boolean checkDateTimeOverlap(Task task1, Task task2) {
