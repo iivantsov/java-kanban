@@ -21,3 +21,8 @@ Any other workflow is not supported.
 ### Version: 4.0
 #### Sprint-7 improvements added
 - App data stored in file
+### Version: 5.0
+#### Sprint-8 improvements added
+- Added start time and duration info to Task, Subtask, Epic
+- App refactored with Stream API
+- Tests refactored
