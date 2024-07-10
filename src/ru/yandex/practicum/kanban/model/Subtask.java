@@ -35,8 +35,8 @@ public class Subtask extends Task {
                 "id=" + getId() +
                 ", type=" + getType() +
                 ", name='" + getName() + '\'' +
-                ", startTime=" + startDateTime +
-                ", duration=" + duration.toMinutes() +
+                ", startTime=" + getStartDateTime() +
+                ", duration=" + getDuration().toMinutes() +
                 ", status=" + getStatus() +
                 ", description='" + getDescription() + '\'' +
                 ", epicID=" + getEpicID() +
