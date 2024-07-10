@@ -20,14 +20,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static final int TYPE_INDEX = 1;
     protected static final int NAME_INDEX = 2;
     protected static final int START_DATE_TIME_INDEX = 3;
-    protected static final int DURATION_INDEX = 4;
-    protected static final int STATUS_INDEX = 5;
-    protected static final int DESCRIPTION_INDEX = 6;
-    private static final int EPIC_ID_INDEX = 7;
-    private static final int NUMBER_OF_SUBTASKS_INDEX = 7;
+    protected static final int END_DATE_TIME_INDEX = 4;
+    protected static final int DURATION_INDEX = 5;
+    protected static final int STATUS_INDEX = 6;
+    protected static final int DESCRIPTION_INDEX = 7;
+    private static final int EPIC_ID_INDEX = 8;
+    private static final int NUMBER_OF_SUBTASKS_INDEX = 8;
     private static final int FILE_HEADER_INDEX = 1;
     private static final String FILE_HEADER =
-            "ID,Type,Name,StartDateTime,Duration,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
+            "ID,Type,Name,StartDateTime,EndDateTime,Duration,Status,Description,EpicID,NumberOfSubtasks,SubtaskIDs";
 
     public FileBackedTaskManager(String fileName) {
         filePath = Paths.get(DEFAULT_DIRECTORY, fileName);
@@ -100,6 +101,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 task.getType().toString(),
                 task.getName(),
                 task.getStartDateTime().toString(),
+                task.getEndDateTime().toString(),
                 Long.toString(duration),
                 task.getStatus().toString(),
                 task.getDescription());
