@@ -297,7 +297,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setEndDateTime(subtasksInEpic.getLast().getEndDateTime());
     }
 
-    private static boolean checkDateTimeOverlap(Task task1, Task task2) {
+    public static boolean checkDateTimeOverlap(Task task1, Task task2) {
         return task1.getStartDateTime().isBefore(task2.getEndDateTime()) &&
                 task1.getEndDateTime().isAfter(task2.getStartDateTime());
     }

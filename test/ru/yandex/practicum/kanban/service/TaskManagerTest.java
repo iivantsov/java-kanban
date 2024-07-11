@@ -9,11 +9,13 @@ import ru.yandex.practicum.kanban.model.Task;
 import ru.yandex.practicum.kanban.model.TaskStatus;
 import ru.yandex.practicum.kanban.service.api.TaskManager;
 import ru.yandex.practicum.kanban.service.impl.DateTimeOverlapException;
+import ru.yandex.practicum.kanban.service.impl.InMemoryTaskManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -137,6 +139,34 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void testCreateTaskWithDateTimeOverlapThrowsDateTimeOverlapException() {
         Task task3 = new Task("Task3", "Overlap test", task1.getStartDateTime(),  task1.getDuration());
         assertThrows(DateTimeOverlapException.class, () -> taskManager.createTask(task3));
+    }
+
+    @Test
+    public void testCheckDateTimeOverlapReturnsTrueInCaseOfOverlap() {
+        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,00);
+        Task task1 = new Task("Task1", "checkDateTimeOverlap test", task1DateTime, duration);
+        LocalDateTime task2DateTime = LocalDateTime.of(2024,Month.JULY,11,18,30);
+        Task task2 = new Task("Task2", "checkDateTimeOverlap test", task2DateTime, duration);
+        // task1 @            19:00 ---- 19:30
+        // task2 @ 18:30 ---- 19:00
+        assertFalse(InMemoryTaskManager.checkDateTimeOverlap(task1, task2),
+                "Task1 overlaps with Task2!");
+        assertFalse(InMemoryTaskManager.checkDateTimeOverlap(task2, task1),
+                "Task2 overlaps with Task1!");
+    }
+
+    @Test
+    public void testCheckDateTimeOverlapReturnsFalseInCaseOfNoOverlap() {
+        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,00);
+        Task task1 = new Task("Task1", "checkDateTimeOverlap test", task1DateTime, duration);
+        LocalDateTime task2DateTime = LocalDateTime.of(2024,Month.JULY,11,19,15);
+        Task task2 = new Task("Task2", "checkDateTimeOverlap test", task2DateTime, duration);
+        // task1 @ 19:00 ---- 19:30
+        // task2 @      19:15 ----- 19:45
+        assertTrue(InMemoryTaskManager.checkDateTimeOverlap(task1, task2),
+                "Task1 does not overlap with Task2");
+        assertTrue(InMemoryTaskManager.checkDateTimeOverlap(task2, task1),
+                "Task2 does not overlap with Task1");
     }
 
     // Tasks
