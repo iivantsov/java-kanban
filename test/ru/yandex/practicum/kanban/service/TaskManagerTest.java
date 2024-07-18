@@ -2,7 +2,6 @@ package ru.yandex.practicum.kanban.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import ru.yandex.practicum.kanban.model.Epic;
 import ru.yandex.practicum.kanban.model.Subtask;
 import ru.yandex.practicum.kanban.model.Task;
@@ -10,12 +9,11 @@ import ru.yandex.practicum.kanban.model.TaskStatus;
 import ru.yandex.practicum.kanban.service.api.TaskManager;
 import ru.yandex.practicum.kanban.service.impl.DateTimeOverlapException;
 import ru.yandex.practicum.kanban.service.impl.InMemoryTaskManager;
+import ru.yandex.practicum.kanban.service.impl.NotFoundException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -216,11 +214,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void testRemoveTaskByIdDeletesItFromTaskManager() {
+    public void testGetRemovedTaskByIdThrowsNotFoundException() {
         taskManager.removeTaskByID(task1ID);
-        Task registeredTask1 = taskManager.getTaskByID(task1ID);
 
-        assertNull(registeredTask1, "Task was not deleted from TaskManager!");
+        assertThrows(NotFoundException.class, () -> taskManager.getTaskByID(task1ID),
+                "Task was not deleted from TaskManager!");
     }
 
     @Test

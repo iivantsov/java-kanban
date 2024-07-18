@@ -1,16 +1,16 @@
 package ru.yandex.practicum.kanban.service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
 import ru.yandex.practicum.kanban.model.Task;
 import ru.yandex.practicum.kanban.service.api.HistoryManager;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     static private final String DEFAULT_TASK_DESCRIPTION = "Test Task";
