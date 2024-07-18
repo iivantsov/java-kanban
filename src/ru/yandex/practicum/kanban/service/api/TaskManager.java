@@ -1,6 +1,7 @@
 package ru.yandex.practicum.kanban.service.api;
 
 import ru.yandex.practicum.kanban.model.*;
+import ru.yandex.practicum.kanban.service.impl.NotFoundException;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ public interface TaskManager {
     // Tasks methods
     List<Task> getAllTasks();
 
-    Task getTaskByID(Integer id);
+    Task getTaskByID(Integer id) throws NotFoundException;
 
     Integer createTask(Task task);
 
     void updateTask(Task task);
 
-    void removeTaskByID(Integer id);
+    void removeTaskByID(Integer id) throws NotFoundException;
 
     void removeAllTasks();
 
