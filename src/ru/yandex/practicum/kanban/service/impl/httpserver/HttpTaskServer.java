@@ -12,12 +12,16 @@ import ru.yandex.practicum.kanban.service.api.TaskManager;
 
 import java.io.IOException;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
     public static final String URL = "http://localhost:" + PORT + "/";
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     public static final int OK_200 = 200;
     public static final int CREATED_201 = 201;
@@ -25,7 +29,6 @@ public class HttpTaskServer {
     public static final int NOT_FOUND_404 = 404;
     public static final int METHOD_NOT_ALLOWED_405 = 405;
     public static final int NOT_ACCEPTABLE_406 = 406;
-    public static final int NOT_IMPLEMENTED_501 = 501;
 
     private final HttpServer server;
     private final static Gson gson = new GsonBuilder()
