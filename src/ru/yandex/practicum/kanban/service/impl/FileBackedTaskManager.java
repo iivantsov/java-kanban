@@ -33,7 +33,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         filePath = Paths.get(DEFAULT_DIRECTORY, fileName);
     }
 
-    public static FileBackedTaskManager loadFromFile(String fileName) throws ManagerLoadException {
+    public static FileBackedTaskManager loadFromFile(String fileName) {
         FileBackedTaskManager manager = new FileBackedTaskManager(fileName);
 
         try {
@@ -71,7 +71,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return filePath;
     }
 
-    private void save() throws ManagerSaveException {
+    private void save() {
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             writer.write(FILE_HEADER);
             for (Task task : tasks.values()) {
