@@ -25,31 +25,26 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        Optional<Integer> maybeId;
-        try {
-            maybeId = getId(httpExchange);
-        } catch (NumberFormatException e) {
-            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
-            return;
-        }
-
         String method = httpExchange.getRequestMethod();
         switch (method) {
-            case "GET" -> handleGetRequest(httpExchange, maybeId);
-            case "POST" -> handlePostRequest(httpExchange, maybeId);
-            case "DELETE" -> handleDeleteRequest(httpExchange, maybeId);
+            case "GET" -> handleGetRequest(httpExchange);
+            case "POST" -> handlePostRequest(httpExchange);
+            case "DELETE" -> handleDeleteRequest(httpExchange);
             default -> sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.METHOD_NOT_ALLOWED_405);
         }
     }
 
-    protected abstract void handleGetRequest(HttpExchange httpExchange, Optional<Integer> maybeId)
-            throws IOException;
+    protected void handleGetRequest(HttpExchange httpExchange) throws IOException {
+        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.METHOD_NOT_ALLOWED_405);
+    }
 
-    protected abstract void handlePostRequest(HttpExchange httpExchange, Optional<Integer> maybeId)
-            throws IOException;
+    protected void handlePostRequest(HttpExchange httpExchange) throws IOException {
+        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.METHOD_NOT_ALLOWED_405);
+    }
 
-    protected abstract void handleDeleteRequest(HttpExchange httpExchange, Optional<Integer> maybeId)
-            throws IOException;
+    protected void handleDeleteRequest(HttpExchange httpExchange) throws IOException {
+        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.METHOD_NOT_ALLOWED_405);
+    }
 
     protected Optional<Integer> getId(HttpExchange httpExchange) throws NumberFormatException {
         String path = httpExchange.getRequestURI().getPath();

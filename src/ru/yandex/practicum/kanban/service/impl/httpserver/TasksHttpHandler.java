@@ -19,33 +19,41 @@ public class TasksHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleGetRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handleGetRequest(HttpExchange httpExchange) throws IOException {
         try {
-            String jsonResponse;
+            String response;
+            Optional<Integer> maybeId = getId(httpExchange);
+
             if (maybeId.isPresent()) {
                 Task task = taskManager.getTaskByID(maybeId.get());
-                jsonResponse = gson.toJson(task);
+                response = gson.toJson(task);
             } else {
                 List<Task> tasks = taskManager.getAllTasks();
-                jsonResponse = gson.toJson(tasks);
+                response = gson.toJson(tasks);
             }
-            sendResponse(httpExchange, jsonResponse, HttpTaskServer.OK_200);
+            sendResponse(httpExchange, response, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (NotFoundException e) {
             sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.NOT_FOUND_404);
         }
     }
 
     @Override
-    protected void handlePostRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handlePostRequest(HttpExchange httpExchange) throws IOException {
         String requestBody = new String(httpExchange.getRequestBody().readAllBytes(), HttpTaskServer.DEFAULT_CHARSET);
         Task task = gson.fromJson(requestBody, Task.class);
         int rCode = HttpTaskServer.CREATED_201;
+
         try {
+            Optional<Integer> maybeId = getId(httpExchange);
             if (maybeId.isPresent()) {
                 taskManager.updateTask(task);
             } else {
                 taskManager.createTask(task);
             }
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (DateTimeOverlapException e) {
             rCode = HttpTaskServer.NOT_ACCEPTABLE_406;
         }
@@ -53,12 +61,17 @@ public class TasksHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleDeleteRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
-        if (maybeId.isPresent()) {
-            taskManager.removeTaskByID(maybeId.get());
-        } else {
-            taskManager.removeAllTasks();
+    protected void handleDeleteRequest(HttpExchange httpExchange) throws IOException {
+        try {
+            Optional<Integer> maybeId = getId(httpExchange);
+            if (maybeId.isPresent()) {
+                taskManager.removeTaskByID(maybeId.get());
+            } else {
+                taskManager.removeAllTasks();
+            }
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         }
-        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
     }
 }
