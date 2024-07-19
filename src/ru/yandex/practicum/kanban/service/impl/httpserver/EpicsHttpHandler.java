@@ -20,9 +20,11 @@ public class EpicsHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleGetRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handleGetRequest(HttpExchange httpExchange) throws IOException {
         try {
-            String jsonResponse;
+            String response;
+            Optional<Integer> maybeId = getId(httpExchange);
+
             if (maybeId.isPresent()) {
                 String path = httpExchange.getRequestURI().getPath();
                 String[] pathParts = path.split("/");
@@ -30,32 +32,38 @@ public class EpicsHttpHandler extends BaseHttpHandler {
                 if (pathParts.length > SUBTASKS_STRING_INDEX_IN_REQUEST_PATH &&
                         pathParts[SUBTASKS_STRING_INDEX_IN_REQUEST_PATH].equals("subtasks")) {
                     List<Subtask> subtasksInEpic = taskManager.getAllSubtasksByEpicID(maybeId.get());
-                    jsonResponse = gson.toJson(subtasksInEpic);
+                    response = gson.toJson(subtasksInEpic);
                 } else {
                     Epic epic = taskManager.getEpicByID(maybeId.get());
-                    jsonResponse = gson.toJson(epic);
+                    response = gson.toJson(epic);
                 }
             } else {
                 List<Epic> epics = taskManager.getAllEpic();
-                jsonResponse = gson.toJson(epics);
+                response = gson.toJson(epics);
             }
-            sendResponse(httpExchange, jsonResponse, HttpTaskServer.OK_200);
+            sendResponse(httpExchange, response, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (NotFoundException e) {
             sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.NOT_FOUND_404);
         }
     }
 
     @Override
-    protected void handlePostRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handlePostRequest(HttpExchange httpExchange) throws IOException {
         String requestBody = new String(httpExchange.getRequestBody().readAllBytes(), HttpTaskServer.DEFAULT_CHARSET);
         Epic epic = gson.fromJson(requestBody, Epic.class);
         int rCode = HttpTaskServer.CREATED_201;
+
         try {
+            Optional<Integer> maybeId = getId(httpExchange);
             if (maybeId.isPresent()) {
                 taskManager.updateEpic(epic);
             } else {
                 taskManager.createEpic(epic);
             }
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (DateTimeOverlapException e) {
             rCode = HttpTaskServer.NOT_ACCEPTABLE_406;
         }
@@ -63,12 +71,17 @@ public class EpicsHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleDeleteRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
-        if (maybeId.isPresent()) {
-            taskManager.removeEpicByID(maybeId.get());
-        } else {
-            taskManager.removeAllEpic();
+    protected void handleDeleteRequest(HttpExchange httpExchange) throws IOException {
+        try {
+            Optional<Integer> maybeId = getId(httpExchange);
+            if (maybeId.isPresent()) {
+                taskManager.removeEpicByID(maybeId.get());
+            } else {
+                taskManager.removeAllEpic();
+            }
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         }
-        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
     }
 }

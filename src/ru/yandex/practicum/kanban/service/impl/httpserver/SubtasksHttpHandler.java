@@ -18,33 +18,39 @@ public class SubtasksHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleGetRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handleGetRequest(HttpExchange httpExchange) throws IOException {
         try {
-            String jsonResponse;
+            String response;
+            Optional<Integer> maybeId = getId(httpExchange);
             if (maybeId.isPresent()) {
                 Subtask subtask = taskManager.getSubtaskByID(maybeId.get());
-                jsonResponse = gson.toJson(subtask);
+                response = gson.toJson(subtask);
             } else {
                 List<Subtask> subtasks = taskManager.getAllSubtasks();
-                jsonResponse = gson.toJson(subtasks);
+                response = gson.toJson(subtasks);
             }
-            sendResponse(httpExchange, jsonResponse, HttpTaskServer.OK_200);
+            sendResponse(httpExchange, response, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (NotFoundException e) {
             sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.NOT_FOUND_404);
         }
     }
 
     @Override
-    protected void handlePostRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
+    protected void handlePostRequest(HttpExchange httpExchange) throws IOException {
         String requestBody = new String(httpExchange.getRequestBody().readAllBytes(), HttpTaskServer.DEFAULT_CHARSET);
         Subtask subtask = gson.fromJson(requestBody, Subtask.class);
         int rCode = HttpTaskServer.CREATED_201;
         try {
+            Optional<Integer> maybeId = getId(httpExchange);
             if (maybeId.isPresent()) {
                 taskManager.updateSubtask(subtask);
             } else {
                 taskManager.createSubtask(subtask);
             }
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         } catch (DateTimeOverlapException e) {
             rCode = HttpTaskServer.NOT_ACCEPTABLE_406;
         }
@@ -52,12 +58,17 @@ public class SubtasksHttpHandler extends BaseHttpHandler {
     }
 
     @Override
-    protected void handleDeleteRequest(HttpExchange httpExchange, Optional<Integer> maybeId) throws IOException {
-        if (maybeId.isPresent()) {
-            taskManager.removeSubtaskByID(maybeId.get());
-        } else {
-            taskManager.removeAllSubtasks();
+    protected void handleDeleteRequest(HttpExchange httpExchange) throws IOException {
+        try {
+            Optional<Integer> maybeId = getId(httpExchange);
+            if (maybeId.isPresent()) {
+                taskManager.removeSubtaskByID(maybeId.get());
+            } else {
+                taskManager.removeAllSubtasks();
+            }
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
+        } catch (NumberFormatException e) {
+            sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.BAD_REQUEST_400);
         }
-        sendResponse(httpExchange, EMPTY_RESPONSE, HttpTaskServer.OK_200);
     }
 }
