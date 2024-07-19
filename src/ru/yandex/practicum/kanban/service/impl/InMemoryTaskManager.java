@@ -94,8 +94,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask getSubtaskByID(Integer id) {
+    public Subtask getSubtaskByID(Integer id) throws NotFoundException {
         Subtask subtask = subtasks.get(id);
+        if (subtask == null) {
+            throw new NotFoundException("Subtask id=" + id + "not found");
+        }
         historyManager.add(subtask);
         return subtask;
     }
