@@ -182,8 +182,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpicByID(Integer id) {
+    public Epic getEpicByID(Integer id) throws NotFoundException {
         Epic epic = epics.get(id);
+        if (epic == null) {
+            throw new NotFoundException("Epic id=" + id + "not found");
+        }
         historyManager.add(epic);
         return epic;
     }

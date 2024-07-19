@@ -40,7 +40,7 @@ public interface TaskManager {
     // Epics methods
     List<Epic> getAllEpic();
 
-    Epic getEpicByID(Integer id);
+    Epic getEpicByID(Integer id) throws NotFoundException;
 
     List<Subtask> getAllSubtasksByEpicID(Integer epicID);
 
