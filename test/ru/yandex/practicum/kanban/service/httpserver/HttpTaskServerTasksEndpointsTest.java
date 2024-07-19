@@ -83,7 +83,7 @@ public class HttpTaskServerTasksEndpointsTest {
 
     @Test
     public void testPostTaskWithDateTimeOverlapNotCompletedWithCode406() throws IOException, InterruptedException {
-        Integer task1Id = taskManager.createTask(task1);
+        taskManager.createTask(task1);
         task2.setStartDateTime(task1.getStartDateTime()); // Simulate DateTime Overlap
         String taskJsonToPost = gson.toJson(task2);
 
@@ -109,14 +109,14 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Task task1FromServerResponce = gson.fromJson(response.body(), Task.class);
+            Task task1FromServerResponse = gson.fromJson(response.body(), Task.class);
 
             assertEquals(HttpTaskServer.OK_200, response.statusCode(), "Wrong response code!");
-            assertEquals(task1FromManager, task1FromServerResponce, "Wrong Task received from server!");
+            assertEquals(task1FromManager, task1FromServerResponse, "Wrong Task received from server!");
         }
     }
 
@@ -127,7 +127,7 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -142,7 +142,7 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -152,8 +152,8 @@ public class HttpTaskServerTasksEndpointsTest {
 
     @Test
     public void testGetReceiveAllTaskFromServer() throws IOException, InterruptedException{
-        Integer task1Id = taskManager.createTask(task1);
-        Integer task2Id = taskManager.createTask(task2);
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
         List<Task> tasksFromManager = List.of(task1,task2);
 
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -161,7 +161,7 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -181,7 +181,7 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -194,15 +194,15 @@ public class HttpTaskServerTasksEndpointsTest {
 
     @Test
     public void testDeleteRemovesAllTaskFromServer() throws IOException, InterruptedException {
-        Integer task1Id = taskManager.createTask(task1);
-        Integer task2Id = taskManager.createTask(task2);
+        taskManager.createTask(task1);
+        taskManager.createTask(task2);
 
         try (HttpClient client = HttpClient.newHttpClient()) {
             URI uri = URI.create(HttpTaskServer.URL + "tasks");
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -222,7 +222,7 @@ public class HttpTaskServerTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(taskJsonToPut))
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

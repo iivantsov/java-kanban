@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 class TaskTest {
     protected Task task1;
     protected Task task2;
-    protected LocalDateTime startDateTime = LocalDateTime.now();
-    protected Duration duration = Duration.ofMinutes(30);
+    protected final LocalDateTime startDateTime = LocalDateTime.now();
+    protected final Duration duration = Duration.ofMinutes(30);
 
     @BeforeEach
     protected void testInit() {

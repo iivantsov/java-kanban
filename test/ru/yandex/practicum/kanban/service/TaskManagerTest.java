@@ -24,7 +24,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     protected Task task1;
     protected Integer task1ID;
     protected Task task2;
-    protected Integer task2ID;
 
     protected Epic newEpic1;
     protected Integer newEpic1ID;
@@ -56,7 +55,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         LocalDateTime task2Start = LocalDateTime.of(2024, Month.JUNE, 21, 17,35);
         task2 = new Task("Violin", "Try to play Vivaldi \"The Four Seasons\"", task2Start, duration);
-        task2ID = taskManager.createTask(task2);
+        taskManager.createTask(task2);
 
         LocalDateTime task1Start = LocalDateTime.of(2024, Month.JUNE, 9, 10,0);
         task1 = new Task("Cleaning", "Vacuum and wash the floors at home", task1Start, duration);

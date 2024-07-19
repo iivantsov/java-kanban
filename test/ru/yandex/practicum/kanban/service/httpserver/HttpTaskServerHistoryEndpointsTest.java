@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HttpTaskServerHistoryEndpointsTest {
     private final TaskManager taskManager;
@@ -76,7 +75,7 @@ public class HttpTaskServerHistoryEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -94,7 +93,7 @@ public class HttpTaskServerHistoryEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

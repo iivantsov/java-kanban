@@ -59,19 +59,19 @@ public class HttpTaskServerPrioritizedTasksEndpointsTest {
         Subtask newSubtask1 = new Subtask("Subtask1", "Test Subtask", startDateTime, duration);
         startDateTime = startDateTime.plus(duration);
         newSubtask1.setEpicID(newEpic1ID);
-        Integer newSubtask1ID = taskManager.createSubtask(newSubtask1);
+        taskManager.createSubtask(newSubtask1);
 
         Subtask newSubtask2 = new Subtask("Subtask2", "Test Subtask", startDateTime, duration);
         newSubtask2.setEpicID(newEpic1ID);
-        Integer newSubtask2ID = taskManager.createSubtask(newSubtask2);
+        taskManager.createSubtask(newSubtask2);
 
         LocalDateTime task2Start = LocalDateTime.of(2024, Month.JUNE, 21, 17,35);
         Task task2 = new Task("Task2", "Test Task", task2Start, duration);
-        Integer task2ID = taskManager.createTask(task2);
+        taskManager.createTask(task2);
 
         LocalDateTime task1Start = LocalDateTime.of(2024, Month.JUNE, 9, 10,0);
         Task task1 = new Task("Task1", "Test Task", task1Start, duration);
-        Integer task1ID = taskManager.createTask(task1);
+        taskManager.createTask(task1);
 
         List<Task> expectedTaskList = List.of(task1, task2, newSubtask1, newSubtask2);
 
@@ -94,7 +94,7 @@ public class HttpTaskServerPrioritizedTasksEndpointsTest {
     @Test
     public void testPostNotCompletedWithCode405() throws IOException, InterruptedException {
         Task task = new Task("Task1", "Test Task", LocalDateTime.now(), duration);
-        Integer taskId = taskManager.createTask(task);
+        taskManager.createTask(task);
         String taskJsonToPost = gson.toJson(task);
 
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -102,7 +102,7 @@ public class HttpTaskServerPrioritizedTasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(taskJsonToPost))
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
