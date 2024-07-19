@@ -15,7 +15,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected final TaskManager taskManager;
     protected final Gson gson;
 
-    protected final String EMPTY_RESPONSE = "";
+    protected static final String EMPTY_RESPONSE = "";
     protected static final int ID_INDEX_IN_REQUEST_PATH = 2;
 
     public BaseHttpHandler(TaskManager taskManager) {
