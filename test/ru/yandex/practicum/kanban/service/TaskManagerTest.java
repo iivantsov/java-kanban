@@ -99,7 +99,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         registeredEpic.setDescription("Test Epic for getHistory");
         taskManager.updateEpic(registeredEpic);
         // 2nd view
-        Epic registeredEpicUpdated = taskManager.getEpicByID(newEpic1ID);
+        taskManager.getEpicByID(newEpic1ID);
 
         taskManager.getHistory().forEach(task -> assertNotEquals(task.getDescription(), DEFAULT_EPIC_DESCRIPTION,
                 "Previous Epic view stores in history!"));
@@ -109,7 +109,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void testRemoveSubtaskByIdDeletesViewedSubtaskFromHistory() {
         // View all created Subtasks
         Subtask registeredSubtask1 = taskManager.getSubtaskByID(newSubtask1ID);
-        Subtask registeredSubtask2 = taskManager.getSubtaskByID(newSubtask2ID);
+        taskManager.getSubtaskByID(newSubtask2ID);
         // Remove Subtask1 from Epic1
         taskManager.removeSubtaskByID(newSubtask1ID);
 
@@ -141,7 +141,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void testCheckDateTimeOverlapReturnsTrueInCaseOfOverlap() {
-        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,00);
+        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,0);
         Task task1 = new Task("Task1", "checkDateTimeOverlap test", task1DateTime, duration);
         LocalDateTime task2DateTime = LocalDateTime.of(2024,Month.JULY,11,18,30);
         Task task2 = new Task("Task2", "checkDateTimeOverlap test", task2DateTime, duration);
@@ -155,7 +155,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void testCheckDateTimeOverlapReturnsFalseInCaseOfNoOverlap() {
-        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,00);
+        LocalDateTime task1DateTime = LocalDateTime.of(2024,Month.JULY,11,19,0);
         Task task1 = new Task("Task1", "checkDateTimeOverlap test", task1DateTime, duration);
         LocalDateTime task2DateTime = LocalDateTime.of(2024,Month.JULY,11,19,15);
         Task task2 = new Task("Task2", "checkDateTimeOverlap test", task2DateTime, duration);
@@ -241,7 +241,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void testGetAllEpicProvidesListOfRegisteredEpics() {
         Epic newEpic2 = new Epic("Epic#1", DEFAULT_EPIC_DESCRIPTION);
-        Integer newEpic2ID = taskManager.createEpic(newEpic2);
+        taskManager.createEpic(newEpic2);
         List<Epic> expectedEpics = List.of(newEpic1, newEpic2);
         List<Epic> registeredEpics = taskManager.getAllEpic();
 
@@ -279,9 +279,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void testRemoveEpicByIdDeletesItFromTaskManager() {
         taskManager.removeEpicByID(newEpic1ID);
-        Epic registeredEpic1 = taskManager.getEpicByID(newEpic1ID);
+        List<Epic> registeredEpics = taskManager.getAllEpic();
 
-        assertNull(registeredEpic1, "Epic was not deleted from TaskManager!");
+        assertFalse(registeredEpics.contains(newEpic1), "Epic was not deleted from TaskManager!");
     }
 
     @Test
