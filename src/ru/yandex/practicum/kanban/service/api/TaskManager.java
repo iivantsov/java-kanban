@@ -20,14 +20,14 @@ public interface TaskManager {
 
     void updateTask(Task task);
 
-    void removeTaskByID(Integer id) throws NotFoundException;
+    void removeTaskByID(Integer id);
 
     void removeAllTasks();
 
     // Subtasks methods
     List<Subtask> getAllSubtasks();
 
-    Subtask getSubtaskByID(Integer id);
+    Subtask getSubtaskByID(Integer id) throws NotFoundException;
 
     Integer createSubtask(Subtask subtask);
 

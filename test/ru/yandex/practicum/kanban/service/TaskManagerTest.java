@@ -271,9 +271,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void testRemoveSubtaskByIdDeletesItFromTaskManager() {
         taskManager.removeSubtaskByID(newSubtask1ID);
-        Task registeredTask1 = taskManager.getSubtaskByID(newSubtask1ID);
+         List<Subtask> registeredSubtasks = taskManager.getAllSubtasks();
 
-        assertNull(registeredTask1, "Subtask was not deleted from TaskManager!");
+         assertFalse(registeredSubtasks.contains(newSubtask1), "Subtask1 was not deleted from TaskManager!");
     }
 
     @Test
