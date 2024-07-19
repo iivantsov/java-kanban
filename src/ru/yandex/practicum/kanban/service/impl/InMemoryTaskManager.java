@@ -36,7 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskByID(Integer id) throws NotFoundException {
+    public Task getTaskByID(Integer id) {
         Task task = tasks.get(id);
         if (task == null) {
             throw new NotFoundException("Task id=" + id + "not found");
@@ -46,7 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Integer createTask(Task task) throws DateTimeOverlapException {
+    public Integer createTask(Task task) {
         Integer id = nextID++;
         task.setId(id);
         tasks.put(id, task);
@@ -59,7 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws DateTimeOverlapException {
+    public void updateTask(Task task) {
         if (!tasks.containsKey(task.getId())) {
             throw new IllegalArgumentException("Task " + task.getName() + " was not created!");
         }
@@ -94,7 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask getSubtaskByID(Integer id) throws NotFoundException {
+    public Subtask getSubtaskByID(Integer id) {
         Subtask subtask = subtasks.get(id);
         if (subtask == null) {
             throw new NotFoundException("Subtask id=" + id + "not found");
@@ -104,7 +104,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Integer createSubtask(Subtask subtask) throws DateTimeOverlapException {
+    public Integer createSubtask(Subtask subtask) {
         Integer epicID = subtask.getEpicID();
         if (!epics.containsKey(epicID)) {
             throw new IllegalArgumentException("Epic with ID=" + epicID + " was not created!");
@@ -127,7 +127,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) throws DateTimeOverlapException {
+    public void updateSubtask(Subtask subtask) {
         if (!subtasks.containsKey(subtask.getId())) {
             throw new IllegalArgumentException("Subtask " + subtask.getName() + " was not created!");
         }
@@ -182,7 +182,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpicByID(Integer id) throws NotFoundException {
+    public Epic getEpicByID(Integer id) {
         Epic epic = epics.get(id);
         if (epic == null) {
             throw new NotFoundException("Epic id=" + id + "not found");
@@ -311,7 +311,7 @@ public class InMemoryTaskManager implements TaskManager {
                 task1.getEndDateTime().isAfter(task2.getStartDateTime());
     }
 
-    private boolean validateByDateTime(Task task) throws DateTimeOverlapException {
+    private boolean validateByDateTime(Task task) {
         if (task.getStartDateTime() == null || task.getDuration() == null) {
             return false;
         }

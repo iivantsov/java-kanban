@@ -1,7 +1,6 @@
 package ru.yandex.practicum.kanban.service.api;
 
 import ru.yandex.practicum.kanban.model.*;
-import ru.yandex.practicum.kanban.service.impl.NotFoundException;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface TaskManager {
     // Tasks methods
     List<Task> getAllTasks();
 
-    Task getTaskByID(Integer id) throws NotFoundException;
+    Task getTaskByID(Integer id);
 
     Integer createTask(Task task);
 
@@ -27,7 +26,7 @@ public interface TaskManager {
     // Subtasks methods
     List<Subtask> getAllSubtasks();
 
-    Subtask getSubtaskByID(Integer id) throws NotFoundException;
+    Subtask getSubtaskByID(Integer id);
 
     Integer createSubtask(Subtask subtask);
 
@@ -40,7 +39,7 @@ public interface TaskManager {
     // Epics methods
     List<Epic> getAllEpic();
 
-    Epic getEpicByID(Integer id) throws NotFoundException;
+    Epic getEpicByID(Integer id);
 
     List<Subtask> getAllSubtasksByEpicID(Integer epicID);
 
