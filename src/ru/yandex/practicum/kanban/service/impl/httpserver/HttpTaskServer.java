@@ -31,7 +31,7 @@ public class HttpTaskServer {
     public static final int NOT_ACCEPTABLE_406 = 406;
 
     private final HttpServer server;
-    private final static Gson gson = new GsonBuilder()
+    private static final Gson gson = new GsonBuilder()
             .serializeNulls()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())
