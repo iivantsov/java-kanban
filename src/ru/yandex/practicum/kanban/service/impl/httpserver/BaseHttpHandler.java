@@ -51,7 +51,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected abstract void handleDeleteRequest(HttpExchange httpExchange, Optional<Integer> maybeId)
             throws IOException;
 
-    protected Optional<Integer> getId(HttpExchange httpExchange) throws IOException, NumberFormatException {
+    protected Optional<Integer> getId(HttpExchange httpExchange) throws NumberFormatException {
         String path = httpExchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
 

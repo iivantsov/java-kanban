@@ -53,7 +53,6 @@ public class HttpTaskServerSubtasksEndpointsTest {
         startDateTime = startDateTime.plus(duration);
         subtask2 = new Subtask("Subtask#2", "Test Subtask", startDateTime, duration);
         subtask2.setEpicID(epicId);
-        startDateTime = startDateTime.plus(duration);
 
         taskServer.start();
     }
@@ -93,7 +92,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
 
     @Test
     public void testPostSubtaskWithDateTimeOverlapNotCompletedWithCode406() throws IOException, InterruptedException {
-        Integer subtask1Id = taskManager.createTask(subtask1);
+        taskManager.createTask(subtask1);
         subtask2.setStartDateTime(subtask1.getStartDateTime()); // Simulate DateTime Overlap
         String subtask2JsonToPost = gson.toJson(subtask2);
 
@@ -119,7 +118,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -137,7 +136,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -152,7 +151,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -162,8 +161,8 @@ public class HttpTaskServerSubtasksEndpointsTest {
 
     @Test
     public void testGetReceiveAllSubtaskFromServer() throws IOException, InterruptedException{
-        Integer subtask1Id = taskManager.createSubtask(subtask1);
-        Integer subtask2Id = taskManager.createSubtask(subtask2);
+        taskManager.createSubtask(subtask1);
+        taskManager.createSubtask(subtask2);
         List<Subtask> subtasksFromManager = List.of(subtask1, subtask2);
 
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -171,7 +170,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -191,7 +190,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -204,15 +203,15 @@ public class HttpTaskServerSubtasksEndpointsTest {
 
     @Test
     public void testDeleteRemovesAllSubtaskFromServer() throws IOException, InterruptedException {
-        Integer subtask1Id = taskManager.createTask(subtask1);
-        Integer subtask2Id = taskManager.createTask(subtask2);
+        taskManager.createTask(subtask1);
+        taskManager.createTask(subtask2);
 
         try (HttpClient client = HttpClient.newHttpClient()) {
             URI uri = URI.create(HttpTaskServer.URL + "subtasks");
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -232,7 +231,7 @@ public class HttpTaskServerSubtasksEndpointsTest {
             HttpRequest request = HttpRequest.newBuilder()
                     .method("PATCH", HttpRequest.BodyPublishers.ofString(subtaskJsonToPatch))
                     .uri(uri)
-                    .headers("Accept", "appliction/json")
+                    .headers("Accept", "application/json")
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

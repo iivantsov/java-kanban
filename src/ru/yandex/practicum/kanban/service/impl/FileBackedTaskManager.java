@@ -20,7 +20,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static final int TYPE_INDEX = 1;
     protected static final int NAME_INDEX = 2;
     protected static final int START_DATE_TIME_INDEX = 3;
-    protected static final int END_DATE_TIME_INDEX = 4;
     protected static final int DURATION_INDEX = 5;
     protected static final int STATUS_INDEX = 6;
     protected static final int DESCRIPTION_INDEX = 7;

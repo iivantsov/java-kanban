@@ -32,7 +32,6 @@ public class HttpTaskServerEpicsEndpointsTest {
     Subtask workSubtask1;
     Subtask workSubtask2;
     Epic educationEpic;
-    Subtask educationSubtask1;
 
     private final HttpTaskServer taskServer;
     private final Gson gson;
@@ -51,10 +50,8 @@ public class HttpTaskServerEpicsEndpointsTest {
         workSubtask1 = new Subtask("Presentation", "Make presentation", startTime, duration);
         startTime = startTime.plus(duration);
         workSubtask2 = new Subtask("Test report", "Make test report", startTime, duration);
-        startTime = startTime.plus(duration);
 
         educationEpic = new Epic("Education", "List of education tasks for the week");
-        educationSubtask1 = new Subtask("Chinese", "Translate a poem", startTime, duration);
 
         taskServer.start();
     }
